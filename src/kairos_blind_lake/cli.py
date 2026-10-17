@@ -15,6 +15,7 @@ from .enclave_lighthouse import (
     KaiRosLighthouse,
     SponsorModelRequest,
     sign_model_package_mldsa65,
+    sign_tee_quote_mldsa65,
 )
 from .medallion_vault import (
     INTEGRATION_SPOKES,
@@ -159,6 +160,16 @@ def run_full_demo(output_dir: Path | None = None) -> dict[str, Any]:
         sponsor_signing_secret=sponsor_secret,
     )
 
+    tee_root_secret = b"kai-blind-platform-tee-root-mldsa65-key!"
+    valid_quote_sig = sign_tee_quote_mldsa65(
+        tee_root_secret,
+        enclave_id="enclave-nitro-sparkkai-01",
+        pcr0_measurement_sha256=pcr0_good,
+        ephemeral_public_key_sha256="b" * 64,
+        verifier_nonce="enclave-boot-nonce-001",
+        key_ttl_seconds=180,
+        egress_zero_sandbox_attested=True,
+    )
     valid_attestation = EnclaveAttestation(
         enclave_id="enclave-nitro-sparkkai-01",
         tee_architecture="AWS-Nitro-Enclave / Confidential-VM + ML-KEM-768",
@@ -169,6 +180,7 @@ def run_full_demo(output_dir: Path | None = None) -> dict[str, Any]:
         freshness_ok=True,
         egress_zero_sandbox_attested=True,
         key_custodian="honorhealth-acr-custodian-enclave",
+        tee_quote_signature=valid_quote_sig,
     )
 
     sig_merck_good = sign_model_package_mldsa65(

@@ -52,6 +52,25 @@ def sign_model_package_mldsa65(
     return hmac.new(sponsor_signing_secret, msg, hashlib.sha256).hexdigest()
 
 
+def sign_tee_quote_mldsa65(
+    hardware_root_secret: bytes,
+    *,
+    enclave_id: str,
+    pcr0_measurement_sha256: str,
+    ephemeral_public_key_sha256: str,
+    verifier_nonce: str,
+    key_ttl_seconds: int,
+    egress_zero_sandbox_attested: bool,
+) -> str:
+    """Cryptographically bind TEE PCR0 measurement, ephemeral key, TTL, and egress-zero state."""
+    msg = (
+        f"tee-quote-mldsa65-v1\x00{enclave_id}\x00{pcr0_measurement_sha256}\x00"
+        f"{ephemeral_public_key_sha256}\x00{verifier_nonce}\x00{key_ttl_seconds}\x00"
+        f"{int(egress_zero_sandbox_attested)}"
+    ).encode("utf-8")
+    return hmac.new(hardware_root_secret, msg, hashlib.sha256).hexdigest()
+
+
 @dataclass(frozen=True)
 class EnclaveAttestation:
     enclave_id: str
@@ -63,6 +82,7 @@ class EnclaveAttestation:
     freshness_ok: bool
     egress_zero_sandbox_attested: bool
     key_custodian: str  # must be hospital/custodian HSM, never vendor or sponsor
+    tee_quote_signature: str | None = None
 
 
 @dataclass(frozen=True)
@@ -118,6 +138,7 @@ class KaiRosLighthouse:
         transparency_log: MerkleTransparencyLog,
         tenant_privacy_budgets: dict[str, float],
         sponsor_signing_secret: bytes = b"kai-blind-platform-sponsor-mldsa65-key!",
+        tee_hardware_root_secret: bytes = b"kai-blind-platform-tee-root-mldsa65-key!",
     ) -> None:
         self.allowed_pcr0_measurements = allowed_pcr0_measurements
         self.circuits = circuits
@@ -125,6 +146,7 @@ class KaiRosLighthouse:
         self.tenant_privacy_budgets = dict(tenant_privacy_budgets)
         self.tenant_privacy_spent: dict[str, float] = {k: 0.0 for k in tenant_privacy_budgets}
         self._sponsor_signing_secret = sponsor_signing_secret
+        self._tee_hardware_root_secret = tee_hardware_root_secret
         self._used_verifier_nonces: set[str] = set()
         self._tenant_prior_cohort_sets: dict[str, list[frozenset[str]]] = {}
 
@@ -187,7 +209,7 @@ class KaiRosLighthouse:
             )
         self._used_verifier_nonces.add(request.verifier_nonce)
 
-        # Gate 4: Egress-Zero Sandbox Attestation & ML-DSA-65 Model-Weight Signature Verification
+        # Gate 4: Egress-Zero Sandbox Attestation, TEE Quote Signature & ML-DSA-65 Model-Weight Signature Verification
         if not attestation.egress_zero_sandbox_attested:
             return self._emit_decision(
                 request, lake, attestation,
@@ -196,6 +218,25 @@ class KaiRosLighthouse:
                 reasons=["enclave_sandbox_must_attest_zero_outbound_network_egress"],
                 aggregate_output=None,
             )
+
+        if attestation.tee_quote_signature is not None:
+            expected_quote = sign_tee_quote_mldsa65(
+                self._tee_hardware_root_secret,
+                enclave_id=attestation.enclave_id,
+                pcr0_measurement_sha256=attestation.pcr0_measurement_sha256,
+                ephemeral_public_key_sha256=attestation.ephemeral_public_key_sha256,
+                verifier_nonce=attestation.verifier_nonce,
+                key_ttl_seconds=attestation.key_ttl_seconds,
+                egress_zero_sandbox_attested=attestation.egress_zero_sandbox_attested,
+            )
+            if not hmac.compare_digest(attestation.tee_quote_signature, expected_quote):
+                return self._emit_decision(
+                    request, lake, attestation,
+                    decision="REJECT_INVALID_TEE_QUOTE_SIGNATURE",
+                    released=False,
+                    reasons=["tee_hardware_quote_signature_over_pcr0_ttl_and_egress_zero_failed"],
+                    aggregate_output=None,
+                )
 
         if request.model_mldsa65_signature is not None:
             expected_sig = sign_model_package_mldsa65(
@@ -373,6 +414,7 @@ class KaiRosLighthouse:
         reasons: list[str],
         aggregate_output: dict[str, Any] | None,
     ) -> dict[str, Any]:
+        nonce_ledger_sha256 = _canonical_sha256(sorted(self._used_verifier_nonces))
         receipt_body = {
             "schema": "kairos-lighthouse-execution-receipt-v3",
             "request_id": request.request_id,
@@ -385,6 +427,7 @@ class KaiRosLighthouse:
             "tee_enclave_id": attestation.enclave_id,
             "tee_pcr0_sha256": attestation.pcr0_measurement_sha256,
             "verifier_nonce": request.verifier_nonce,
+            "nonce_ledger_merkle_sha256": nonce_ledger_sha256,
             "key_ttl_seconds": attestation.key_ttl_seconds,
             "egress_zero_sandbox": attestation.egress_zero_sandbox_attested,
             "key_custodian": attestation.key_custodian,

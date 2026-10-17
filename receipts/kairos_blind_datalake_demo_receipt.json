@@ -32,7 +32,7 @@
     "verified": true,
     "errors": [],
     "tree_size": 10,
-    "latest_root_sha256": "49f0a250b7ded1e549f48d68bb7b0f6892a7cc1e14fcd32236a65c24c8ad8802",
+    "latest_root_sha256": "fbf6c96d6aed09fd1bccf66037f05d4492da41620145f4f8f3406c7855214890",
     "witness_count": 2
   },
   "use_cases": {
@@ -65,6 +65,7 @@
         "tee_enclave_id": "enclave-nitro-sparkkai-01",
         "tee_pcr0_sha256": "a7f9c2e41b8d0934e5621098f7c4b3a291087654321fedcba9876543210fedcb",
         "verifier_nonce": "vn-20261017-001",
+        "nonce_ledger_merkle_sha256": "8104128cdbe63e6c3b31589fafad233b569016c342ad0ee0c94599cb70f85554",
         "key_ttl_seconds": 180,
         "egress_zero_sandbox": true,
         "key_custodian": "honorhealth-acr-custodian-enclave",
@@ -76,7 +77,7 @@
           "post_decryption_calibration_and_net_benefit_verified"
         ],
         "output_digest_sha256": "aaf7b4f2b94a22e824ff0ee6ea834527b4ea4f299cf16494b0d50a6013304fd6",
-        "receipt_sha256": "4d6252266a784ea6e3d71693d5bcb617b1ad2c0b7d4e9fb33ab9010adcb16783"
+        "receipt_sha256": "ee8e51dafdcce3515986cd0f5fe745267cd68bdbe6c0258af6d8ae1a6af8630f"
       },
       "aggregate_output": {
         "cohort_n": 29,
@@ -99,27 +100,27 @@
       },
       "transparency_proof": {
         "leaf_index": 0,
-        "leaf_sha256": "4481bf43a4c593c21f3f9d71c02877ad4f195e7f1130e92bd14a78035c35a397",
+        "leaf_sha256": "a9f44d99df436e59fb367d655d2d3b7e85ec61e2ee9bad32b6ab5103b9b200d2",
         "signed_tree_head": {
           "tree_size": 1,
           "epoch": 1,
-          "root_hash": "4481bf43a4c593c21f3f9d71c02877ad4f195e7f1130e92bd14a78035c35a397",
+          "root_hash": "a9f44d99df436e59fb367d655d2d3b7e85ec61e2ee9bad32b6ab5103b9b200d2",
           "prev_root_hash": "0000000000000000000000000000000000000000000000000000000000000000",
           "org_hsm_key_id": "kai-blind-platform-root-hsm-mldsa65",
-          "org_hsm_signature": "4f766ead55aecc225572ef1e98ebc19c9cc2eaa962dc46577c532a657fb04399",
+          "org_hsm_signature": "f96f698fd41dec8684d8a1c30957ca2f6b32f489dd0a8b73759f73d2f1f36034",
           "rfc3161_timestamp": "2026-10-17T08:30:01Z",
           "witness_signatures": [
             {
               "witness_id": "witness-node-oraclekai",
               "tree_size": 1,
-              "root_hash": "4481bf43a4c593c21f3f9d71c02877ad4f195e7f1130e92bd14a78035c35a397",
-              "signature_hex": "c11686e58262393d9389974e2870f992c65491d900319bf068029ab41a9aef53"
+              "root_hash": "a9f44d99df436e59fb367d655d2d3b7e85ec61e2ee9bad32b6ab5103b9b200d2",
+              "signature_hex": "223b6d1b37c616b8dbca2e837e855e1409e2373d1e19f28d4b686ec318327ad1"
             },
             {
               "witness_id": "witness-node-sparkkai",
               "tree_size": 1,
-              "root_hash": "4481bf43a4c593c21f3f9d71c02877ad4f195e7f1130e92bd14a78035c35a397",
-              "signature_hex": "59ac40815855986d93f55d41b9ad82d9cc190e80da79edb979989f5447a29dd5"
+              "root_hash": "a9f44d99df436e59fb367d655d2d3b7e85ec61e2ee9bad32b6ab5103b9b200d2",
+              "signature_hex": "7dc6d363f2e25cdd89b52580e9d3db7249ead7657fb01f4b43278302d4ebf309"
             }
           ]
         }
@@ -138,6 +139,7 @@
         "tee_enclave_id": "enclave-nitro-sparkkai-01",
         "tee_pcr0_sha256": "a7f9c2e41b8d0934e5621098f7c4b3a291087654321fedcba9876543210fedcb",
         "verifier_nonce": "vn-20261017-002",
+        "nonce_ledger_merkle_sha256": "97d8be87a9a996c25ebb91eef6b9026c38adc821834b41d91891b53f22af210c",
         "key_ttl_seconds": 180,
         "egress_zero_sandbox": true,
         "key_custodian": "honorhealth-acr-custodian-enclave",
@@ -150,7 +152,7 @@
           "stochastic_cloak_is_model_specific_perturbation_not_fhe_encryption"
         ],
         "output_digest_sha256": "49deb56278162a990f05b93fdbfb824479c5b1598cc59ebb5170ca49723bd472",
-        "receipt_sha256": "b2be0a54a1c8da3b8b3ea2a73faad3ec40d20df2bcfdda619d058cd8526d30bd"
+        "receipt_sha256": "713c23137f8a088d130ad0f0af6542f423501ab4fea82870ec21554b7672ad6f"
       },
       "aggregate_output": {
         "cohort_n": 29,
@@ -173,27 +175,27 @@
       },
       "transparency_proof": {
         "leaf_index": 1,
-        "leaf_sha256": "1e014ae89e4384fe694e6fa59634dcc79d58cb5be8fb0efafc4a106d3714d9d8",
+        "leaf_sha256": "ac82635da66b765580eebbbd8f112e0ab70fd0ac1a2aaa4dee866166cb1b7bcf",
         "signed_tree_head": {
           "tree_size": 2,
           "epoch": 1,
-          "root_hash": "7709cb360e8721b43ad2f943382bd80137c500afb924b8833eca74fb994727c2",
-          "prev_root_hash": "4481bf43a4c593c21f3f9d71c02877ad4f195e7f1130e92bd14a78035c35a397",
+          "root_hash": "bc2c912da1b2b6446fbfaf9c6dfc9b03d19371fd4a6e7a8e1a278e1b74219675",
+          "prev_root_hash": "a9f44d99df436e59fb367d655d2d3b7e85ec61e2ee9bad32b6ab5103b9b200d2",
           "org_hsm_key_id": "kai-blind-platform-root-hsm-mldsa65",
-          "org_hsm_signature": "3fa7ae436f7e20e44417954f5f4088e5263f738118b7d15d6fa7a9029a225ea0",
+          "org_hsm_signature": "1fd848cc6aa9f4ae5d01951bf5302752720b5b81cb662ed387c6adf5d84a86fd",
           "rfc3161_timestamp": "2026-10-17T08:30:05Z",
           "witness_signatures": [
             {
               "witness_id": "witness-node-oraclekai",
               "tree_size": 2,
-              "root_hash": "7709cb360e8721b43ad2f943382bd80137c500afb924b8833eca74fb994727c2",
-              "signature_hex": "bbcbe95e30131a307f133994917e03dc01bbbc9013dec1cbb2607a4173088a98"
+              "root_hash": "bc2c912da1b2b6446fbfaf9c6dfc9b03d19371fd4a6e7a8e1a278e1b74219675",
+              "signature_hex": "5f08554f22c83a2341cd01efbb522db31b9c525d588687915b2b69386bdb010b"
             },
             {
               "witness_id": "witness-node-sparkkai",
               "tree_size": 2,
-              "root_hash": "7709cb360e8721b43ad2f943382bd80137c500afb924b8833eca74fb994727c2",
-              "signature_hex": "01057f75a19c5fbb350016bc2b74bcbddeeb9e8fd251a20f75847743c03cba46"
+              "root_hash": "bc2c912da1b2b6446fbfaf9c6dfc9b03d19371fd4a6e7a8e1a278e1b74219675",
+              "signature_hex": "01a4e801751854a49caffddcbac20184a60f7fa6d5108b395825ed40162560db"
             }
           ]
         }
@@ -212,6 +214,7 @@
         "tee_enclave_id": "enclave-nitro-sparkkai-01",
         "tee_pcr0_sha256": "a7f9c2e41b8d0934e5621098f7c4b3a291087654321fedcba9876543210fedcb",
         "verifier_nonce": "vn-20261017-003",
+        "nonce_ledger_merkle_sha256": "653b8f859c2f91e88cbfadd2d849b62a3abea00ef23340dedfb0da89b304548f",
         "key_ttl_seconds": 180,
         "egress_zero_sandbox": true,
         "key_custodian": "honorhealth-acr-custodian-enclave",
@@ -222,32 +225,32 @@
           "uncalibrated_net_benefit_-0.0412_harmful"
         ],
         "output_digest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
-        "receipt_sha256": "5f8c5004cff6536526c8745befd5afa02277ad37c3c7c7814066524b6fa6db87"
+        "receipt_sha256": "2be5b7880538c07303fb3a998477dd8fd932e127e818fbd85658284465bcd876"
       },
       "aggregate_output": null,
       "transparency_proof": {
         "leaf_index": 2,
-        "leaf_sha256": "98cd1fa168109e31ba66880a0fcb07065bf28746abcf6699fc288befb7e5911b",
+        "leaf_sha256": "a7344cf5bb8b4d0d14c826d74f5a8fae905f714de386578ea870c65d76b789a2",
         "signed_tree_head": {
           "tree_size": 3,
           "epoch": 1,
-          "root_hash": "34a908b45017df2eab6f66476e430237390c3b62cc7b322134284ca6013581e6",
-          "prev_root_hash": "7709cb360e8721b43ad2f943382bd80137c500afb924b8833eca74fb994727c2",
+          "root_hash": "c67da757e21fc5d9d989ebe9d2db43fbfc0ef0714ed7567eccd8153c61e2f18c",
+          "prev_root_hash": "bc2c912da1b2b6446fbfaf9c6dfc9b03d19371fd4a6e7a8e1a278e1b74219675",
           "org_hsm_key_id": "kai-blind-platform-root-hsm-mldsa65",
-          "org_hsm_signature": "9df42e570bb8acc3678a01061fc651e985b5af43e909c5ba7b245f51990bab8c",
+          "org_hsm_signature": "db76b22cfcaca3c2c9e5288230322ea250e36e1e44fa8e907332b8ca4f356587",
           "rfc3161_timestamp": "2026-10-17T08:30:10Z",
           "witness_signatures": [
             {
               "witness_id": "witness-node-oraclekai",
               "tree_size": 3,
-              "root_hash": "34a908b45017df2eab6f66476e430237390c3b62cc7b322134284ca6013581e6",
-              "signature_hex": "d8b1f97d2d748997cf7de74ec502448397acb8ca6a459248cfbebd7a73d44c75"
+              "root_hash": "c67da757e21fc5d9d989ebe9d2db43fbfc0ef0714ed7567eccd8153c61e2f18c",
+              "signature_hex": "45860be4ac01681751ad51b56b7eb894a7b4ddad33936e73d17360aebad3ef7e"
             },
             {
               "witness_id": "witness-node-sparkkai",
               "tree_size": 3,
-              "root_hash": "34a908b45017df2eab6f66476e430237390c3b62cc7b322134284ca6013581e6",
-              "signature_hex": "45b1074ca02010b8f4527417abd47936cc154932b63e0d21cf9c48d8c77c94fe"
+              "root_hash": "c67da757e21fc5d9d989ebe9d2db43fbfc0ef0714ed7567eccd8153c61e2f18c",
+              "signature_hex": "bc5a529f616cdb091779f2d40f1012fed0f0620ff8c4a954274e0b6617b0aca6"
             }
           ]
         }
@@ -266,6 +269,7 @@
         "tee_enclave_id": "enclave-nitro-sparkkai-01",
         "tee_pcr0_sha256": "a7f9c2e41b8d0934e5621098f7c4b3a291087654321fedcba9876543210fedcb",
         "verifier_nonce": "vn-20261017-004",
+        "nonce_ledger_merkle_sha256": "653b8f859c2f91e88cbfadd2d849b62a3abea00ef23340dedfb0da89b304548f",
         "key_ttl_seconds": 180,
         "egress_zero_sandbox": true,
         "key_custodian": "honorhealth-acr-custodian-enclave",
@@ -275,32 +279,32 @@
           "raw_row_export_and_vendor_decrypt_are_hard_rejected"
         ],
         "output_digest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
-        "receipt_sha256": "1e62ffae752b12973cbe37f4c6485c0e7c4193fed3f42851f934212472f3d57c"
+        "receipt_sha256": "f4fef2a7053da03207f96a2d14e7b5f5e04c4e4eea1152d96d71b5d2c2649c3a"
       },
       "aggregate_output": null,
       "transparency_proof": {
         "leaf_index": 3,
-        "leaf_sha256": "84b308a0d4bdf244dc5219405d839d2005765f29e7a1b4acec08b00c2d9659d4",
+        "leaf_sha256": "8c033c054864944e6638ec426b0cbc7354cdf6ef91699a70f2d29dae1f9119e9",
         "signed_tree_head": {
           "tree_size": 4,
           "epoch": 1,
-          "root_hash": "697e26eb927df994e845fd158af807124921ae661177bb1a51be1df6656b9e92",
-          "prev_root_hash": "34a908b45017df2eab6f66476e430237390c3b62cc7b322134284ca6013581e6",
+          "root_hash": "d862d6dc0ab15772e5c728a4f74bd259211a5076670c3650591106870ce41028",
+          "prev_root_hash": "c67da757e21fc5d9d989ebe9d2db43fbfc0ef0714ed7567eccd8153c61e2f18c",
           "org_hsm_key_id": "kai-blind-platform-root-hsm-mldsa65",
-          "org_hsm_signature": "1a161556de52e80c33cceac3db5afc0e81f615cd3e2d073ce59a85da968231f6",
+          "org_hsm_signature": "f51424a8e99472b7e891fad953ddc5942e49a3c299c396909ef217c262156318",
           "rfc3161_timestamp": "2026-10-17T08:30:15Z",
           "witness_signatures": [
             {
               "witness_id": "witness-node-oraclekai",
               "tree_size": 4,
-              "root_hash": "697e26eb927df994e845fd158af807124921ae661177bb1a51be1df6656b9e92",
-              "signature_hex": "8e0dbb6c04acae3ea66c9cb6b2e57278621e769dd1e777c2beb4760c371df8e7"
+              "root_hash": "d862d6dc0ab15772e5c728a4f74bd259211a5076670c3650591106870ce41028",
+              "signature_hex": "2d0daef7615089e9b2fea3ba32da44552e02df30ae19edfafd98c42ac8ef1817"
             },
             {
               "witness_id": "witness-node-sparkkai",
               "tree_size": 4,
-              "root_hash": "697e26eb927df994e845fd158af807124921ae661177bb1a51be1df6656b9e92",
-              "signature_hex": "de1103d6d266bb509aeb259ed0899bfbf3558076f2fe8e452190365188966698"
+              "root_hash": "d862d6dc0ab15772e5c728a4f74bd259211a5076670c3650591106870ce41028",
+              "signature_hex": "a4f9a82e4b209930819d8862c4505e4fa13ecf6891db5f84f25799a0806456f9"
             }
           ]
         }
@@ -319,6 +323,7 @@
         "tee_enclave_id": "enclave-nitro-sparkkai-01",
         "tee_pcr0_sha256": "a7f9c2e41b8d0934e5621098f7c4b3a291087654321fedcba9876543210fedcb",
         "verifier_nonce": "vn-20261017-005",
+        "nonce_ledger_merkle_sha256": "a10bc2ad47767f97f3c5cd8900f1d797d69ce7be9b6c8e247cedea30071bf3a0",
         "key_ttl_seconds": 180,
         "egress_zero_sandbox": true,
         "key_custodian": "honorhealth-acr-custodian-enclave",
@@ -328,32 +333,32 @@
           "presented_crypto_parameter_digest_diverges_from_calibrated_profile"
         ],
         "output_digest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
-        "receipt_sha256": "0562f55341a122c3d0cbee6753ba1dd27cfa0fc86aaf31d184ab97aaee5782d9"
+        "receipt_sha256": "79caad721292a6671349b7bab0995495b8bafa3dfcb3c30fca9c5084ef4b3efd"
       },
       "aggregate_output": null,
       "transparency_proof": {
         "leaf_index": 4,
-        "leaf_sha256": "34400ebd1bbe633e12eb11388f744eaa4ee8d756773682b25e6969d8c4b1dce1",
+        "leaf_sha256": "d251e3d11e77e585b729c26652aca4777e7e87ecce2fb24a93310023fc3a71dc",
         "signed_tree_head": {
           "tree_size": 5,
           "epoch": 1,
-          "root_hash": "501fa8e9e4a97f024603764238a3fdd64dede2466c1f25777d4c9b31cfc780cd",
-          "prev_root_hash": "697e26eb927df994e845fd158af807124921ae661177bb1a51be1df6656b9e92",
+          "root_hash": "8f39aca15269fceed785e1778d4d2b28e1a87f6bdba718fecbd6f9c890f2ff3f",
+          "prev_root_hash": "d862d6dc0ab15772e5c728a4f74bd259211a5076670c3650591106870ce41028",
           "org_hsm_key_id": "kai-blind-platform-root-hsm-mldsa65",
-          "org_hsm_signature": "6ac4516a22898edfaba47d8198ee6ff35017b611f6efa7c2506a1bc0ded467ae",
+          "org_hsm_signature": "90801680e222a187c570a6ec7f23918ba11d252782b57852ae86a7b95a873c8e",
           "rfc3161_timestamp": "2026-10-17T08:30:20Z",
           "witness_signatures": [
             {
               "witness_id": "witness-node-oraclekai",
               "tree_size": 5,
-              "root_hash": "501fa8e9e4a97f024603764238a3fdd64dede2466c1f25777d4c9b31cfc780cd",
-              "signature_hex": "e5070dacc43f93c49a9f4614f3025e73431e982eb8c3ee0e46654424bdcc2420"
+              "root_hash": "8f39aca15269fceed785e1778d4d2b28e1a87f6bdba718fecbd6f9c890f2ff3f",
+              "signature_hex": "26c30bb8f480044cfc4e44847be8286e9748a563c42207cb59816fa63addd22b"
             },
             {
               "witness_id": "witness-node-sparkkai",
               "tree_size": 5,
-              "root_hash": "501fa8e9e4a97f024603764238a3fdd64dede2466c1f25777d4c9b31cfc780cd",
-              "signature_hex": "07b1111c74bef27b44325f08da1c7c3612d9adc7db9da3825377ebe7a308b4ac"
+              "root_hash": "8f39aca15269fceed785e1778d4d2b28e1a87f6bdba718fecbd6f9c890f2ff3f",
+              "signature_hex": "661515999cfb155e6f9aa1524a3517e334536507a743c1d8ca8998f9cc1f45bd"
             }
           ]
         }
@@ -372,6 +377,7 @@
         "tee_enclave_id": "enclave-nitro-sparkkai-01",
         "tee_pcr0_sha256": "a7f9c2e41b8d0934e5621098f7c4b3a291087654321fedcba9876543210fedcb",
         "verifier_nonce": "vn-20261017-006",
+        "nonce_ledger_merkle_sha256": "43955b39712c685620305650e04b0c9ad94a4ded3691234d3808b58eb102bfd9",
         "key_ttl_seconds": 180,
         "egress_zero_sandbox": true,
         "key_custodian": "honorhealth-acr-custodian-enclave",
@@ -381,32 +387,32 @@
           "bulk_imaging_video_notes_stay_at_rest_under_ml_kem_768_envelope"
         ],
         "output_digest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
-        "receipt_sha256": "c454f759f95a5705d774737ef518dda23fbd96255f242b05a2b86aa79b4d3ce3"
+        "receipt_sha256": "ba56f37b5c9b5502533912f029d17e1fd2b86e267a29bc0105456bd2d0b40cf2"
       },
       "aggregate_output": null,
       "transparency_proof": {
         "leaf_index": 5,
-        "leaf_sha256": "362ba332e76a0ed050a805169523df436338371391bd8805fcc6f60bd7febb4d",
+        "leaf_sha256": "b75e18692e557b9c470c8cf08ab53b76a9deae36076617937228016859bc9de6",
         "signed_tree_head": {
           "tree_size": 6,
           "epoch": 1,
-          "root_hash": "12b8e05f3d199efb29465660838f01e27ec36a194977a06e65d23edd9f19d7e8",
-          "prev_root_hash": "501fa8e9e4a97f024603764238a3fdd64dede2466c1f25777d4c9b31cfc780cd",
+          "root_hash": "2544ea99944eab3c06e1567ea1e2102f8ce3dc1dc58e1c50f05f32f2349912b1",
+          "prev_root_hash": "8f39aca15269fceed785e1778d4d2b28e1a87f6bdba718fecbd6f9c890f2ff3f",
           "org_hsm_key_id": "kai-blind-platform-root-hsm-mldsa65",
-          "org_hsm_signature": "4af70038ff8be3be9d95b7a480a707aa7b6b655203d0d3dad9fd3d26859b3542",
+          "org_hsm_signature": "0b0661c090cf030263e4684cc794e1c0fa781f44705df337e0ad89baf48ed7da",
           "rfc3161_timestamp": "2026-10-17T08:30:25Z",
           "witness_signatures": [
             {
               "witness_id": "witness-node-oraclekai",
               "tree_size": 6,
-              "root_hash": "12b8e05f3d199efb29465660838f01e27ec36a194977a06e65d23edd9f19d7e8",
-              "signature_hex": "25ec99065e56c5127d736febdead8897d301b7071a7b6327f0342894bfe240da"
+              "root_hash": "2544ea99944eab3c06e1567ea1e2102f8ce3dc1dc58e1c50f05f32f2349912b1",
+              "signature_hex": "6b3a7b3552d64be16a98cede078cc26f48e4ae3092b23edff43502c05c99f330"
             },
             {
               "witness_id": "witness-node-sparkkai",
               "tree_size": 6,
-              "root_hash": "12b8e05f3d199efb29465660838f01e27ec36a194977a06e65d23edd9f19d7e8",
-              "signature_hex": "13f9e8089e2d5f6df352aa16a83a7e9e6b1ca834dfc5317de571bcdaf1818b76"
+              "root_hash": "2544ea99944eab3c06e1567ea1e2102f8ce3dc1dc58e1c50f05f32f2349912b1",
+              "signature_hex": "41f96a591813b43ec65c5b6e8f90241ea3f8ffdfa8f1f5f7597882abd4e4a6de"
             }
           ]
         }
@@ -425,6 +431,7 @@
         "tee_enclave_id": "enclave-nitro-sparkkai-01",
         "tee_pcr0_sha256": "a7f9c2e41b8d0934e5621098f7c4b3a291087654321fedcba9876543210fedcb",
         "verifier_nonce": "vn-20261017-007",
+        "nonce_ledger_merkle_sha256": "add3926f2cfdfe920abc6c9d5c6262130671f98144df5e945ddaaf3fe9a880b8",
         "key_ttl_seconds": 180,
         "egress_zero_sandbox": true,
         "key_custodian": "honorhealth-acr-custodian-enclave",
@@ -434,32 +441,32 @@
           "no_validated_dose_comparative_or_freetext_circuit_in_catalog"
         ],
         "output_digest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
-        "receipt_sha256": "3ba794f95b2d5af5ff8f0cf8d2406159ccd75151fd6eb32abc8c018cfc77badc"
+        "receipt_sha256": "78430ca33c86ebb1896941edf6878c70a3f0f13f211b4fa8d77295ba68c19e5e"
       },
       "aggregate_output": null,
       "transparency_proof": {
         "leaf_index": 6,
-        "leaf_sha256": "6ff69b902b8968c87a9c4e01425c8142cff9ae281af21bd8eb3b2f8245b97dde",
+        "leaf_sha256": "67dfa4a896bf1f64d105f1523b673e18ebc2a14e431451d882307f6a601bcd61",
         "signed_tree_head": {
           "tree_size": 7,
           "epoch": 1,
-          "root_hash": "6f67e01504714eb287ef1089c671ade4df93a0e464b8728dc0e9c94390d6b8b9",
-          "prev_root_hash": "12b8e05f3d199efb29465660838f01e27ec36a194977a06e65d23edd9f19d7e8",
+          "root_hash": "bae84d17e263640e284924552f67d588eec1882b576e458f84a60e6c79b81dab",
+          "prev_root_hash": "2544ea99944eab3c06e1567ea1e2102f8ce3dc1dc58e1c50f05f32f2349912b1",
           "org_hsm_key_id": "kai-blind-platform-root-hsm-mldsa65",
-          "org_hsm_signature": "ec97afc1f3a4e1cd5bbb655290fcc83957fa6585b2a432881f6f5914bb106d62",
+          "org_hsm_signature": "5d46bf37cfce8817f4f93d8f37e8af19a397913926a0a88294bb6d55770656db",
           "rfc3161_timestamp": "2026-10-17T08:30:30Z",
           "witness_signatures": [
             {
               "witness_id": "witness-node-oraclekai",
               "tree_size": 7,
-              "root_hash": "6f67e01504714eb287ef1089c671ade4df93a0e464b8728dc0e9c94390d6b8b9",
-              "signature_hex": "5017eb30572817328cb102d3f2380a3921e32592b4a8fe9cef50758d7bf22a97"
+              "root_hash": "bae84d17e263640e284924552f67d588eec1882b576e458f84a60e6c79b81dab",
+              "signature_hex": "c49c47ce9fd34f1c5bb41900797df13111d061fd5a5cf7ed72a31fd074ec26f2"
             },
             {
               "witness_id": "witness-node-sparkkai",
               "tree_size": 7,
-              "root_hash": "6f67e01504714eb287ef1089c671ade4df93a0e464b8728dc0e9c94390d6b8b9",
-              "signature_hex": "07a490e5ed50debbb66f7ff588a0265da41030f1ce2819318ddaf7ee36338693"
+              "root_hash": "bae84d17e263640e284924552f67d588eec1882b576e458f84a60e6c79b81dab",
+              "signature_hex": "748633582f976d6a2f802bc6260004f53f3785b99fa98c903f487ddf79cad7cb"
             }
           ]
         }
@@ -478,6 +485,7 @@
         "tee_enclave_id": "enclave-nitro-sparkkai-01",
         "tee_pcr0_sha256": "a7f9c2e41b8d0934e5621098f7c4b3a291087654321fedcba9876543210fedcb",
         "verifier_nonce": "vn-20261017-001",
+        "nonce_ledger_merkle_sha256": "add3926f2cfdfe920abc6c9d5c6262130671f98144df5e945ddaaf3fe9a880b8",
         "key_ttl_seconds": 180,
         "egress_zero_sandbox": true,
         "key_custodian": "honorhealth-acr-custodian-enclave",
@@ -487,32 +495,32 @@
           "verifier_nonce_vn-20261017-001_already_consumed_anti_replay_triggered"
         ],
         "output_digest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
-        "receipt_sha256": "fa6b8d96e335e9892372d386eb5ccc22251d86887f97ce255c587abf9d11aad8"
+        "receipt_sha256": "c280c3ec0223c53d78abb8611f15b36239446bf32670f3f7d962b6d3e3f1887b"
       },
       "aggregate_output": null,
       "transparency_proof": {
         "leaf_index": 7,
-        "leaf_sha256": "06c3d11253d7107de13e22b7dcc9fb73e8814aa5a1924f02d0519d0aa7232647",
+        "leaf_sha256": "f533296599a29733f9af8a9fb0f4ca90bafb055cd62d9c796cf7a9b93396714c",
         "signed_tree_head": {
           "tree_size": 8,
           "epoch": 1,
-          "root_hash": "ab8224c1bedeb8a69589c5ecbd7aa4d435880e2df076cab1286d9b8e701a2a2e",
-          "prev_root_hash": "6f67e01504714eb287ef1089c671ade4df93a0e464b8728dc0e9c94390d6b8b9",
+          "root_hash": "3c1617ddb9cdee43bca3086416321598931d940b544edae1698af2d2e13f0887",
+          "prev_root_hash": "bae84d17e263640e284924552f67d588eec1882b576e458f84a60e6c79b81dab",
           "org_hsm_key_id": "kai-blind-platform-root-hsm-mldsa65",
-          "org_hsm_signature": "7736ca9e2693a8bbd882b7ac8d77d3806b653d3fedf3d90023265a8cbabed357",
+          "org_hsm_signature": "f6ecf870bec68b4dfe0a1d9e91d9fc6f879f503e3b539cef565f70ba76514882",
           "rfc3161_timestamp": "2026-10-17T08:30:35Z",
           "witness_signatures": [
             {
               "witness_id": "witness-node-oraclekai",
               "tree_size": 8,
-              "root_hash": "ab8224c1bedeb8a69589c5ecbd7aa4d435880e2df076cab1286d9b8e701a2a2e",
-              "signature_hex": "29c601f82eb412ed1260a181e71fe2691d484b71f2ea845e0be2764df704fdc3"
+              "root_hash": "3c1617ddb9cdee43bca3086416321598931d940b544edae1698af2d2e13f0887",
+              "signature_hex": "0238feeaa77244a0c5dd4cb89377324ed25f96a40dc7731fce150ab77dad4aaa"
             },
             {
               "witness_id": "witness-node-sparkkai",
               "tree_size": 8,
-              "root_hash": "ab8224c1bedeb8a69589c5ecbd7aa4d435880e2df076cab1286d9b8e701a2a2e",
-              "signature_hex": "892b8ddd6fe6efeb3b8e313a10a264b9078a43fe469cea35674f4716939f28de"
+              "root_hash": "3c1617ddb9cdee43bca3086416321598931d940b544edae1698af2d2e13f0887",
+              "signature_hex": "4de6eee5c1f562e72cc7a23850bcecb8c132b5f8e6d54cf5b376e0b7814bfa3f"
             }
           ]
         }
@@ -531,6 +539,7 @@
         "tee_enclave_id": "enclave-nitro-sparkkai-01",
         "tee_pcr0_sha256": "a7f9c2e41b8d0934e5621098f7c4b3a291087654321fedcba9876543210fedcb",
         "verifier_nonce": "vn-20261017-009",
+        "nonce_ledger_merkle_sha256": "3ba80a50526b7d42ca44cdedfa5b583ad18a761495388d6e93d05a71350ef6c8",
         "key_ttl_seconds": 180,
         "egress_zero_sandbox": true,
         "key_custodian": "honorhealth-acr-custodian-enclave",
@@ -540,32 +549,32 @@
           "symmetric_cohort_difference_1_below_minimum_3_patients_reconstruction_blocked"
         ],
         "output_digest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
-        "receipt_sha256": "5769f0dfb2105eb5492f6a21bdbd04a12b98b0eb16e8400513c6ae8352e27586"
+        "receipt_sha256": "86c4db3db0c6fbe9c787583ff75aece7f10e9f1eb5b98d0f71461c8ddfeb74f1"
       },
       "aggregate_output": null,
       "transparency_proof": {
         "leaf_index": 8,
-        "leaf_sha256": "f7a3a3d203bdecc42a0195854fad964d57fd3b14e334c9242b4f4c06769d83f8",
+        "leaf_sha256": "a94b1d025cfd05300c9fb1fab354e61384a9e8619872bb0ce1f9668ebf5986e9",
         "signed_tree_head": {
           "tree_size": 9,
           "epoch": 1,
-          "root_hash": "2df0ddb4fa302a68bea612d04599416841af2fbf2be79acc483bb725ae0e296d",
-          "prev_root_hash": "ab8224c1bedeb8a69589c5ecbd7aa4d435880e2df076cab1286d9b8e701a2a2e",
+          "root_hash": "4a92cc95c4c1b0e06b273932cbfb0e32e2167823593b0dbd479da621a4a531b1",
+          "prev_root_hash": "3c1617ddb9cdee43bca3086416321598931d940b544edae1698af2d2e13f0887",
           "org_hsm_key_id": "kai-blind-platform-root-hsm-mldsa65",
-          "org_hsm_signature": "741210a6c2abe7c66ec21f5f48d1d46ef13e6682a89c81bb11758b500db47e2b",
+          "org_hsm_signature": "af72f2c1cb4f230747ca153fac845ac4d40500438fe68438e4bab24e1c978896",
           "rfc3161_timestamp": "2026-10-17T08:30:40Z",
           "witness_signatures": [
             {
               "witness_id": "witness-node-oraclekai",
               "tree_size": 9,
-              "root_hash": "2df0ddb4fa302a68bea612d04599416841af2fbf2be79acc483bb725ae0e296d",
-              "signature_hex": "7e183b486c06a36781c86d64c166ea7becee5004788d5c679205411b41adb84a"
+              "root_hash": "4a92cc95c4c1b0e06b273932cbfb0e32e2167823593b0dbd479da621a4a531b1",
+              "signature_hex": "4601a62e5aa3107d5196afb5f790fe5bcc3404141cbc57dcd46e0ebefa8ebe82"
             },
             {
               "witness_id": "witness-node-sparkkai",
               "tree_size": 9,
-              "root_hash": "2df0ddb4fa302a68bea612d04599416841af2fbf2be79acc483bb725ae0e296d",
-              "signature_hex": "b686ff760e999dca5c8ae7f3fcbb143a1534b577a08f2bbe2ac21c79a929edad"
+              "root_hash": "4a92cc95c4c1b0e06b273932cbfb0e32e2167823593b0dbd479da621a4a531b1",
+              "signature_hex": "2e90f17fb1351fe32b9300f8ce77d25d7abfdf0b75e17164d9998aec09882994"
             }
           ]
         }
@@ -584,6 +593,7 @@
         "tee_enclave_id": "enclave-nitro-sparkkai-01",
         "tee_pcr0_sha256": "a7f9c2e41b8d0934e5621098f7c4b3a291087654321fedcba9876543210fedcb",
         "verifier_nonce": "vn-20261017-010",
+        "nonce_ledger_merkle_sha256": "29887d55a2079547e9973c5615a9d8cb78205c56a68400e9eb7c0c296d1ca893",
         "key_ttl_seconds": 180,
         "egress_zero_sandbox": true,
         "key_custodian": "honorhealth-acr-custodian-enclave",
@@ -593,32 +603,32 @@
           "post_quantum_mldsa65_model_weight_signature_verification_failed"
         ],
         "output_digest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
-        "receipt_sha256": "822bc278274bcd736483913f1add5136a80e3ad715eb304f3dcf92e2c6ba8c81"
+        "receipt_sha256": "71a1aeec0bc17ef3c11eee54554120563398c3ecb374e918ddd4c3f4f61b7b4b"
       },
       "aggregate_output": null,
       "transparency_proof": {
         "leaf_index": 9,
-        "leaf_sha256": "481ec8535189f82e355bca5a5309ab2860dd2a8581a5e5f59a6d2755f6bfa159",
+        "leaf_sha256": "a05c96a4b88a4ee2fa7c5d0d4fff81af1b1eaf3e646cfb327e8ac6af7ec8a50c",
         "signed_tree_head": {
           "tree_size": 10,
           "epoch": 1,
-          "root_hash": "49f0a250b7ded1e549f48d68bb7b0f6892a7cc1e14fcd32236a65c24c8ad8802",
-          "prev_root_hash": "2df0ddb4fa302a68bea612d04599416841af2fbf2be79acc483bb725ae0e296d",
+          "root_hash": "fbf6c96d6aed09fd1bccf66037f05d4492da41620145f4f8f3406c7855214890",
+          "prev_root_hash": "4a92cc95c4c1b0e06b273932cbfb0e32e2167823593b0dbd479da621a4a531b1",
           "org_hsm_key_id": "kai-blind-platform-root-hsm-mldsa65",
-          "org_hsm_signature": "c55ce1927487e11cf5171e9dad9c3ff9b7c4d8268d1ceb2708a33a57e86b5e8d",
+          "org_hsm_signature": "f9568df194120cecbb141c4c2f92fb9a7f3a9168403b0d0805dc760ea4a43494",
           "rfc3161_timestamp": "2026-10-17T08:30:45Z",
           "witness_signatures": [
             {
               "witness_id": "witness-node-oraclekai",
               "tree_size": 10,
-              "root_hash": "49f0a250b7ded1e549f48d68bb7b0f6892a7cc1e14fcd32236a65c24c8ad8802",
-              "signature_hex": "ffa0ab3f0ef413e180d7191f9d5c1bc59a9ef6afe725e7660ee528a7a693ed25"
+              "root_hash": "fbf6c96d6aed09fd1bccf66037f05d4492da41620145f4f8f3406c7855214890",
+              "signature_hex": "405e2c2fe7044e92227637a8500ed356cbdd1bb7adfb34c683c4a246e338def1"
             },
             {
               "witness_id": "witness-node-sparkkai",
               "tree_size": 10,
-              "root_hash": "49f0a250b7ded1e549f48d68bb7b0f6892a7cc1e14fcd32236a65c24c8ad8802",
-              "signature_hex": "f4f41be53e999a682fd1cfa2d46c334939fb8a25d365788c277d083d0db4b371"
+              "root_hash": "fbf6c96d6aed09fd1bccf66037f05d4492da41620145f4f8f3406c7855214890",
+              "signature_hex": "6a6d8d13b095d19c25935e610e3e0617ba86ceb2477959fa726179b843e49b70"
             }
           ]
         }
