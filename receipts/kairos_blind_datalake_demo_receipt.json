@@ -1,0 +1,498 @@
+{
+  "schema": "kairos-blind-datalake-demo-bundle-v1",
+  "claim_boundary": "SYNTHETIC_REFERENCE_ARCHITECTURE_NO_PHI_TIER_BC_IP_HELD",
+  "medallion_summary": {
+    "lake_id": "atari-origin-blind-lake-v1",
+    "domain": "cardio-ophtha-multimodal",
+    "mastered_patients": 30,
+    "bronze_count": 30,
+    "silver_count": 29,
+    "gold_count": 29,
+    "exception_queue_count": 1,
+    "reid_crosswalk_custodian_isolated": true
+  },
+  "unmatched_mdm_quarantine_proof": {
+    "event_id": "EVT-UNMATCHED-9999",
+    "mdm_id": "MDM-UNKNOWN-9999",
+    "status": "QUARANTINE_EXCEPTION_QUEUE",
+    "reason": "unmatched_mdm_id_update_only_never_creates_new_patient"
+  },
+  "crosswalk_walkback_block_proof": {
+    "allowed": false,
+    "caller_role": "sponsor_analyst_merck",
+    "reason": "REID_CROSSWALK_ISOLATED_IN_CUSTODIAN_HSM_NO_WALKBACK"
+  },
+  "transparency_log_integrity": {
+    "verified": true,
+    "errors": [],
+    "tree_size": 7,
+    "latest_root_sha256": "4c2d507543353ccdc31a55b8a26323380b6505ca551ed21a529ef4fe4ec372a8",
+    "witness_count": 2
+  },
+  "sponsor_runs": [
+    {
+      "receipt": {
+        "schema": "kairos-lighthouse-execution-receipt-v1",
+        "request_id": "REQ-MERCK-001-PASS",
+        "sponsor_tenant": "merck-cardio-ai",
+        "model_id": "merck-cabg-af-risk-v2",
+        "model_weights_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+        "target_lake_id": "atari-origin-blind-lake-v1",
+        "circuit_id": "ckks-cardio-mortality-v1",
+        "presented_profile_digest": "c4d8e2f190a3b7c6543210fedcba9876543210fedcba9876543210fedcba9876",
+        "tee_enclave_id": "enclave-nitro-sparkkai-01",
+        "tee_pcr0_sha256": "a7f9c2e41b8d0934e5621098f7c4b3a291087654321fedcba9876543210fedcb",
+        "key_custodian": "honorhealth-acr-custodian-enclave",
+        "decision": "RELEASE_ASSURED_FHE_AGGREGATE",
+        "released": true,
+        "reasons": [
+          "tee_attested_hsm_custodian_verified",
+          "k25_cohort_floor_and_dp_budget_verified",
+          "post_decryption_calibration_and_net_benefit_verified"
+        ],
+        "output_digest_sha256": "fe5e6567a596af650fefc54e4cc39302c93f43ef52ef539849fc32ef402754ec",
+        "receipt_sha256": "abf62f1aa72b81c81ac3dbab880f31bb1d0c133592c98d31210b03fc68607d98"
+      },
+      "aggregate_output": {
+        "cohort_n": 29,
+        "k_anonymity_floor": 25,
+        "mean_risk_probability": 0.5086,
+        "assurance_metrics": {
+          "auc_discrimination": 0.6676,
+          "calibration_slope": 1.011,
+          "brier_score": 0.1749,
+          "net_benefit_at_035": 0.0845
+        },
+        "privacy_ledger": {
+          "epsilon_spent_this_run": 0.5,
+          "epsilon_cumulative": 0.5,
+          "epsilon_budget_max": 2.0
+        },
+        "raw_rows_exported": 0,
+        "reid_crosswalk_touched": false
+      },
+      "transparency_proof": {
+        "leaf_index": 0,
+        "leaf_sha256": "1cb1aef0d581241e91542086adfb8e65624269983e330f0a43bdd602ca89cd14",
+        "signed_tree_head": {
+          "tree_size": 1,
+          "epoch": 1,
+          "root_hash": "1cb1aef0d581241e91542086adfb8e65624269983e330f0a43bdd602ca89cd14",
+          "prev_root_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+          "org_hsm_key_id": "atari-zcor-root-hsm-v1",
+          "org_hsm_signature": "c39a1ea2b49b8fb7645e0fdf6536ee4f8ad0f349547ecf0c83398e74b9c111c2",
+          "rfc3161_timestamp": "2026-10-17T08:30:01Z",
+          "witness_signatures": [
+            {
+              "witness_id": "witness-node-oraclekai",
+              "tree_size": 1,
+              "root_hash": "1cb1aef0d581241e91542086adfb8e65624269983e330f0a43bdd602ca89cd14",
+              "signature_hex": "9d39ce6d1389426eaa39cb191b1aeff2cb88d0f2c8af1a560f769b005501b8c3"
+            },
+            {
+              "witness_id": "witness-node-sparkkai",
+              "tree_size": 1,
+              "root_hash": "1cb1aef0d581241e91542086adfb8e65624269983e330f0a43bdd602ca89cd14",
+              "signature_hex": "fe63834314a028e571162118f4f8b47ceee2cf6aa6d9a2d61149ebb173b81797"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "receipt": {
+        "schema": "kairos-lighthouse-execution-receipt-v1",
+        "request_id": "REQ-REGENERON-002-PASS",
+        "sponsor_tenant": "regeneron-ophtha-ai",
+        "model_id": "regeneron-oct-fluid-persistence-v1",
+        "model_weights_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "target_lake_id": "atari-origin-blind-lake-v1",
+        "circuit_id": "cloak-retinal-oct-persistence-v1",
+        "presented_profile_digest": "e9b1a4c782d5f0123456789abcdef0123456789abcdef0123456789abcdef012",
+        "tee_enclave_id": "enclave-nitro-sparkkai-01",
+        "tee_pcr0_sha256": "a7f9c2e41b8d0934e5621098f7c4b3a291087654321fedcba9876543210fedcb",
+        "key_custodian": "honorhealth-acr-custodian-enclave",
+        "decision": "RELEASE_CLOAKED_EMBEDDING_AGGREGATE",
+        "released": true,
+        "reasons": [
+          "tee_attested_hsm_custodian_verified",
+          "k25_cohort_floor_and_dp_budget_verified",
+          "post_decryption_calibration_and_net_benefit_verified",
+          "stochastic_cloak_is_model_specific_perturbation_not_fhe_encryption"
+        ],
+        "output_digest_sha256": "97101df77e14b015b74325fd3e862ff05488b857069628ad6673b3639ecfe2a7",
+        "receipt_sha256": "af462900189728149c57d0bf8bb6348d0c44b9ac723ea46431b12a69b7864393"
+      },
+      "aggregate_output": {
+        "cohort_n": 29,
+        "k_anonymity_floor": 25,
+        "mean_risk_probability": 0.5065,
+        "assurance_metrics": {
+          "auc_discrimination": 0.742,
+          "calibration_slope": 1.004,
+          "brier_score": 0.161,
+          "net_benefit_at_035": 0.091
+        },
+        "privacy_ledger": {
+          "epsilon_spent_this_run": 0.5,
+          "epsilon_cumulative": 0.5,
+          "epsilon_budget_max": 2.0
+        },
+        "raw_rows_exported": 0,
+        "reid_crosswalk_touched": false
+      },
+      "transparency_proof": {
+        "leaf_index": 1,
+        "leaf_sha256": "76605ad8f162a30cb421f2ca08e9fb29f193615d87deb662ffcaf902a896ac4d",
+        "signed_tree_head": {
+          "tree_size": 2,
+          "epoch": 1,
+          "root_hash": "4c5e65317b7e3750a33b23b130eb6b3888d49aea9494afcdcbe068fd68542480",
+          "prev_root_hash": "1cb1aef0d581241e91542086adfb8e65624269983e330f0a43bdd602ca89cd14",
+          "org_hsm_key_id": "atari-zcor-root-hsm-v1",
+          "org_hsm_signature": "6f5a9f96e2dc65aa674d97ed07926dae552fecd40f59cc01b06f40d2aaa24705",
+          "rfc3161_timestamp": "2026-10-17T08:30:05Z",
+          "witness_signatures": [
+            {
+              "witness_id": "witness-node-oraclekai",
+              "tree_size": 2,
+              "root_hash": "4c5e65317b7e3750a33b23b130eb6b3888d49aea9494afcdcbe068fd68542480",
+              "signature_hex": "aaa9f76575105ef00f8c736473fbc2ab8a15de0533c98d9583d51d35f65c1d34"
+            },
+            {
+              "witness_id": "witness-node-sparkkai",
+              "tree_size": 2,
+              "root_hash": "4c5e65317b7e3750a33b23b130eb6b3888d49aea9494afcdcbe068fd68542480",
+              "signature_hex": "7ba416c486662be35e644f8d2a5dc90da89725b83fdc113b931c8fdb03bf8fa7"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "receipt": {
+        "schema": "kairos-lighthouse-execution-receipt-v1",
+        "request_id": "REQ-MERCK-003-UNCALIBRATED-BLOCK",
+        "sponsor_tenant": "merck-cardio-ai",
+        "model_id": "merck-cabg-af-risk-v2",
+        "model_weights_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+        "target_lake_id": "atari-origin-blind-lake-v1",
+        "circuit_id": "ckks-cardio-mortality-v1",
+        "presented_profile_digest": "c4d8e2f190a3b7c6543210fedcba9876543210fedcba9876543210fedcba9876",
+        "tee_enclave_id": "enclave-nitro-sparkkai-01",
+        "tee_pcr0_sha256": "a7f9c2e41b8d0934e5621098f7c4b3a291087654321fedcba9876543210fedcb",
+        "key_custodian": "honorhealth-acr-custodian-enclave",
+        "decision": "WITHHOLD_UNCALIBRATED_SLOPE_COLLAPSE",
+        "released": false,
+        "reasons": [
+          "uncalibrated_fhe_slope_1.32e+07_outside_0.90_1.10",
+          "uncalibrated_net_benefit_-0.0412_harmful"
+        ],
+        "output_digest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "receipt_sha256": "9fd8445e9bd0bd460b24c24bd6ba4779fa79110e9459b1230d9aa418f92bc4cb"
+      },
+      "aggregate_output": null,
+      "transparency_proof": {
+        "leaf_index": 2,
+        "leaf_sha256": "48e13d7552583e54e3c9848ca2d34eea5e3330e6194688877be990fc07a01d10",
+        "signed_tree_head": {
+          "tree_size": 3,
+          "epoch": 1,
+          "root_hash": "a0552f6b58827f4e33079595be5f0fa08f20b373b31f04b47dfe7b9313dd6538",
+          "prev_root_hash": "4c5e65317b7e3750a33b23b130eb6b3888d49aea9494afcdcbe068fd68542480",
+          "org_hsm_key_id": "atari-zcor-root-hsm-v1",
+          "org_hsm_signature": "6c3059bc4408e78ea779a8c42ceabbedd3d4269cbf3110cec0032b9f15f26471",
+          "rfc3161_timestamp": "2026-10-17T08:30:10Z",
+          "witness_signatures": [
+            {
+              "witness_id": "witness-node-oraclekai",
+              "tree_size": 3,
+              "root_hash": "a0552f6b58827f4e33079595be5f0fa08f20b373b31f04b47dfe7b9313dd6538",
+              "signature_hex": "cc2aa31f1a548663e24a410fc1e8191c885a0c6a17da0dd8295edc815a3eb662"
+            },
+            {
+              "witness_id": "witness-node-sparkkai",
+              "tree_size": 3,
+              "root_hash": "a0552f6b58827f4e33079595be5f0fa08f20b373b31f04b47dfe7b9313dd6538",
+              "signature_hex": "cc7380c6bbe518f760a71411b980123dbb4c893958dd8e6dc1af3a5cc2401c33"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "receipt": {
+        "schema": "kairos-lighthouse-execution-receipt-v1",
+        "request_id": "REQ-SPONSOR-004-ROW-EXPORT-BLOCK",
+        "sponsor_tenant": "merck-cardio-ai",
+        "model_id": "merck-raw-extract",
+        "model_weights_sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+        "target_lake_id": "atari-origin-blind-lake-v1",
+        "circuit_id": "ckks-cardio-mortality-v1",
+        "presented_profile_digest": "c4d8e2f190a3b7c6543210fedcba9876543210fedcba9876543210fedcba9876",
+        "tee_enclave_id": "enclave-nitro-sparkkai-01",
+        "tee_pcr0_sha256": "a7f9c2e41b8d0934e5621098f7c4b3a291087654321fedcba9876543210fedcb",
+        "key_custodian": "honorhealth-acr-custodian-enclave",
+        "decision": "REJECT_VENDOR_OR_ROW_EXPORT_PATH",
+        "released": false,
+        "reasons": [
+          "raw_row_export_and_vendor_decrypt_are_hard_rejected"
+        ],
+        "output_digest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "receipt_sha256": "c47551652d8eded0b5fdef9d485c3d15a786ef4630c9e7113f69666cd2deef08"
+      },
+      "aggregate_output": null,
+      "transparency_proof": {
+        "leaf_index": 3,
+        "leaf_sha256": "0eabd91c5a660ddc83485a73580cc8a262ba96988959a38d98aa198569696287",
+        "signed_tree_head": {
+          "tree_size": 4,
+          "epoch": 1,
+          "root_hash": "5d58552a21a5699f35f4c6a82484dcae9185cba57b95af61634b61e41df4fb4f",
+          "prev_root_hash": "a0552f6b58827f4e33079595be5f0fa08f20b373b31f04b47dfe7b9313dd6538",
+          "org_hsm_key_id": "atari-zcor-root-hsm-v1",
+          "org_hsm_signature": "c9afad7f40d77400a4ae6aac71c9daa0334046724d5cc788878020bc82427d51",
+          "rfc3161_timestamp": "2026-10-17T08:30:15Z",
+          "witness_signatures": [
+            {
+              "witness_id": "witness-node-oraclekai",
+              "tree_size": 4,
+              "root_hash": "5d58552a21a5699f35f4c6a82484dcae9185cba57b95af61634b61e41df4fb4f",
+              "signature_hex": "de743ee0ed5834db4b6aae48c017af81ad4f1395648cd3d435576250b5d92165"
+            },
+            {
+              "witness_id": "witness-node-sparkkai",
+              "tree_size": 4,
+              "root_hash": "5d58552a21a5699f35f4c6a82484dcae9185cba57b95af61634b61e41df4fb4f",
+              "signature_hex": "b622ebf0037abe117a4e9702da30bc6e6f75ece000f30dc5c0807b028555c9d4"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "receipt": {
+        "schema": "kairos-lighthouse-execution-receipt-v1",
+        "request_id": "REQ-REGENERON-005-FINGERPRINT-DRIFT",
+        "sponsor_tenant": "regeneron-ophtha-ai",
+        "model_id": "regeneron-oct-fluid-persistence-v1",
+        "model_weights_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "target_lake_id": "atari-origin-blind-lake-v1",
+        "circuit_id": "cloak-retinal-oct-persistence-v1",
+        "presented_profile_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+        "tee_enclave_id": "enclave-nitro-sparkkai-01",
+        "tee_pcr0_sha256": "a7f9c2e41b8d0934e5621098f7c4b3a291087654321fedcba9876543210fedcb",
+        "key_custodian": "honorhealth-acr-custodian-enclave",
+        "decision": "WITHHOLD_CRYPTO_FINGERPRINT_MISMATCH",
+        "released": false,
+        "reasons": [
+          "presented_crypto_parameter_digest_diverges_from_calibrated_profile"
+        ],
+        "output_digest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "receipt_sha256": "e1d5a2b9d54f13f6c5ceeea55634804261a1ba4890b9136d62b36b42d44a0aa2"
+      },
+      "aggregate_output": null,
+      "transparency_proof": {
+        "leaf_index": 4,
+        "leaf_sha256": "ed267462a47d9cfcc1dcc05419684b6da4f98bb4cd56cb369fca5169a5d2235f",
+        "signed_tree_head": {
+          "tree_size": 5,
+          "epoch": 1,
+          "root_hash": "c9beceefbe60a694c37bcde81f6bcd06920f61e1e6aec10cd4ad2dc395d2ec61",
+          "prev_root_hash": "5d58552a21a5699f35f4c6a82484dcae9185cba57b95af61634b61e41df4fb4f",
+          "org_hsm_key_id": "atari-zcor-root-hsm-v1",
+          "org_hsm_signature": "6ffb44b61504c93c1c0cecf4077f74a4bf00a3444637363afcae4003546960c8",
+          "rfc3161_timestamp": "2026-10-17T08:30:20Z",
+          "witness_signatures": [
+            {
+              "witness_id": "witness-node-oraclekai",
+              "tree_size": 5,
+              "root_hash": "c9beceefbe60a694c37bcde81f6bcd06920f61e1e6aec10cd4ad2dc395d2ec61",
+              "signature_hex": "e6c12be3672223fe6199864ab219be3222c401356800338bf809593526f93086"
+            },
+            {
+              "witness_id": "witness-node-sparkkai",
+              "tree_size": 5,
+              "root_hash": "c9beceefbe60a694c37bcde81f6bcd06920f61e1e6aec10cd4ad2dc395d2ec61",
+              "signature_hex": "7d920290f8765bc14edfbca4759a4c8223a7cf6415d7a5795b1c4dbc57c5c401"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "receipt": {
+        "schema": "kairos-lighthouse-execution-receipt-v1",
+        "request_id": "REQ-REGENERON-006-BULK-DICOM-BLOCK",
+        "sponsor_tenant": "regeneron-ophtha-ai",
+        "model_id": "regeneron-raw-dicom-fhe",
+        "model_weights_sha256": "4444444444444444444444444444444444444444444444444444444444444444",
+        "target_lake_id": "atari-origin-blind-lake-v1",
+        "circuit_id": "cloak-retinal-oct-persistence-v1",
+        "presented_profile_digest": "e9b1a4c782d5f0123456789abcdef0123456789abcdef0123456789abcdef012",
+        "tee_enclave_id": "enclave-nitro-sparkkai-01",
+        "tee_pcr0_sha256": "a7f9c2e41b8d0934e5621098f7c4b3a291087654321fedcba9876543210fedcb",
+        "key_custodian": "honorhealth-acr-custodian-enclave",
+        "decision": "REJECT_FHE_ON_BULK_MODALITY",
+        "released": false,
+        "reasons": [
+          "bulk_imaging_video_notes_stay_at_rest_under_ml_kem_768_envelope"
+        ],
+        "output_digest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "receipt_sha256": "08d22ad975fa93ef8a43e005c3740085a170632d5f007bdc0c7228af377b07b6"
+      },
+      "aggregate_output": null,
+      "transparency_proof": {
+        "leaf_index": 5,
+        "leaf_sha256": "1c0731885433d4dc54230e4491ef03fdf7ec834b28d5ce64e893a450e38a8578",
+        "signed_tree_head": {
+          "tree_size": 6,
+          "epoch": 1,
+          "root_hash": "768376e08b0d30e36bb5901150198e671a7a71945d6566dae8ec840100fb5675",
+          "prev_root_hash": "c9beceefbe60a694c37bcde81f6bcd06920f61e1e6aec10cd4ad2dc395d2ec61",
+          "org_hsm_key_id": "atari-zcor-root-hsm-v1",
+          "org_hsm_signature": "f24ae5c4c3780a350265c4a66899d3da2f69ef0b763ec65c6a091286f4b8b1f3",
+          "rfc3161_timestamp": "2026-10-17T08:30:25Z",
+          "witness_signatures": [
+            {
+              "witness_id": "witness-node-oraclekai",
+              "tree_size": 6,
+              "root_hash": "768376e08b0d30e36bb5901150198e671a7a71945d6566dae8ec840100fb5675",
+              "signature_hex": "9693aecc4bab6338b35f4e697fb4f508fb86db0e8419a49948899fceb09037be"
+            },
+            {
+              "witness_id": "witness-node-sparkkai",
+              "tree_size": 6,
+              "root_hash": "768376e08b0d30e36bb5901150198e671a7a71945d6566dae8ec840100fb5675",
+              "signature_hex": "bc8c9cc3b88319d638aa4794c1bd0251529cc1f8fd3f055b4dcfc410fb4eb804"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "receipt": {
+        "schema": "kairos-lighthouse-execution-receipt-v1",
+        "request_id": "REQ-REGENERON-007-DOSE-CLAIM-ABSTAIN",
+        "sponsor_tenant": "regeneron-ophtha-ai",
+        "model_id": "regeneron-unvalidated-dose-comparator",
+        "model_weights_sha256": "5555555555555555555555555555555555555555555555555555555555555555",
+        "target_lake_id": "atari-origin-blind-lake-v1",
+        "circuit_id": "cloak-retinal-oct-persistence-v1",
+        "presented_profile_digest": "e9b1a4c782d5f0123456789abcdef0123456789abcdef0123456789abcdef012",
+        "tee_enclave_id": "enclave-nitro-sparkkai-01",
+        "tee_pcr0_sha256": "a7f9c2e41b8d0934e5621098f7c4b3a291087654321fedcba9876543210fedcb",
+        "key_custodian": "honorhealth-acr-custodian-enclave",
+        "decision": "ABSTAIN_UNSUPPORTED_CLINICAL_CLAIM",
+        "released": false,
+        "reasons": [
+          "no_validated_dose_comparative_or_freetext_circuit_in_catalog"
+        ],
+        "output_digest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "receipt_sha256": "5224d5047bf4d9b7aaaaea4639815eccb6e031be3454b0efba44c3e195b83e0e"
+      },
+      "aggregate_output": null,
+      "transparency_proof": {
+        "leaf_index": 6,
+        "leaf_sha256": "2e8b0c06db640a92e7b0bb44d31c37335977d65cc361a8576f9809c124319784",
+        "signed_tree_head": {
+          "tree_size": 7,
+          "epoch": 1,
+          "root_hash": "4c2d507543353ccdc31a55b8a26323380b6505ca551ed21a529ef4fe4ec372a8",
+          "prev_root_hash": "768376e08b0d30e36bb5901150198e671a7a71945d6566dae8ec840100fb5675",
+          "org_hsm_key_id": "atari-zcor-root-hsm-v1",
+          "org_hsm_signature": "4e291de6027ea6842fd955eff8b241873b7bee4fe75ffb5dce199c6e53546f9e",
+          "rfc3161_timestamp": "2026-10-17T08:30:30Z",
+          "witness_signatures": [
+            {
+              "witness_id": "witness-node-oraclekai",
+              "tree_size": 7,
+              "root_hash": "4c2d507543353ccdc31a55b8a26323380b6505ca551ed21a529ef4fe4ec372a8",
+              "signature_hex": "8975b1f48490d6180682f71e96ffb1e777399691381bb75767a68a56375e811c"
+            },
+            {
+              "witness_id": "witness-node-sparkkai",
+              "tree_size": 7,
+              "root_hash": "4c2d507543353ccdc31a55b8a26323380b6505ca551ed21a529ef4fe4ec372a8",
+              "signature_hex": "8ddbe1e8f84809e87cf0e84a5a33f65e8ad70a0a20fad55f19ab93300f82cbe7"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "compliance_readiness": {
+    "schema": "kairos-compliance-readiness-v1",
+    "posture_disclaimer": "Control-mapped synthetic reference architecture. Not a claim of completed third-party ISO/SOC audit opinion or live PHI custody.",
+    "frameworks_mapped": 5,
+    "controls": [
+      {
+        "framework": "ISO/IEC 27001:2022 & ISO/IEC 27701",
+        "clauses": "A.8.24 (Use of Cryptography), A.8.3 (Access Restriction), PIMS 7.2 (Purpose Limitation & Consent)",
+        "control_mechanism": "Custodian-held HSM secret keys, ML-KEM-768 post-quantum at-rest envelope, CKKS FHE in-use evaluation, and MDM consent-purpose enforcement.",
+        "code_verifier": "MedallionDataLake.ingest_spoke_event + CustodianCrosswalkVault.attempt_external_walkback",
+        "readiness_state": "CONTROL_IMPLEMENTED_IN_DEMO (External Certification Audit Required for Production)"
+      },
+      {
+        "framework": "SOC 2 Type II (Trust Services Criteria)",
+        "clauses": "CC6.1 (Logical Access), CC6.7 (Transmission/Movement), PI1.4 (Processing Integrity), C1.1 (Confidentiality)",
+        "control_mechanism": "PCR0-pinned TEE enclave attestation, fail-closed calibration/net-benefit release gate (PI1.4), and k>=25 + Differential Privacy budget enforcement.",
+        "code_verifier": "KaiRosLighthouse.evaluate_sponsor_request (8-stage fail-closed gate)",
+        "readiness_state": "CONTROL_IMPLEMENTED_IN_DEMO (Type II Observation Period Required for Production)"
+      },
+      {
+        "framework": "SOC 1 Type II (ICFR / Royalty & Usage Metering)",
+        "clauses": "ITGC Change Management & Transaction Integrity for Sponsor Compute Metering",
+        "control_mechanism": "Witnessed CT-style Merkle log records immutable sequence numbers, tenant epsilon consumption, and patient/institute dividend flags per computation.",
+        "code_verifier": "MerkleTransparencyLog.append_receipt + verify_log_integrity",
+        "readiness_state": "CONTROL_IMPLEMENTED_IN_DEMO (Scoped to Financial/Royalty Metering Integrity)"
+      },
+      {
+        "framework": "HIPAA Security & Privacy Rule",
+        "clauses": "45 CFR 164.312(a)(1), 164.312(b), 164.312(e)(1), 164.514(b) (Expert Determination / Safe Harbor Boundary)",
+        "control_mechanism": "Silver quasi-identifier generalization, isolated custodian crosswalk, k>=25 cohort floor, and zero raw PHI outside hospital boundary.",
+        "code_verifier": "MedallionDataLake.revoke_consent + MIN_COHORT_K_ANONYMITY gate",
+        "readiness_state": "CONTROL_IMPLEMENTED_IN_DEMO (BAA & Institutional Enclave Required Before PHI)"
+      },
+      {
+        "framework": "FDA 21 CFR Part 11 & ASME V&V 40 Readiness",
+        "clauses": "11.10(a) Validation, 11.10(e) Time-Stamped Audit Trails, 11.50 Signature Manifestation",
+        "control_mechanism": "Deterministic circuit-digest binding, RFC 3161 trusted timestamps, Org HSM + dual-witness signatures, and pre-specified clinical acceptance bands.",
+        "code_verifier": "CircuitCatalogEntry parameter_profile_digest + MerkleTransparencyLog",
+        "readiness_state": "CONTROL_IMPLEMENTED_IN_DEMO (Sponsor QMS Validation Required Per Intended Use)"
+      }
+    ],
+    "veeva_comparison": [
+      {
+        "dimension": "1. Patient MDM & Consent Ingestion",
+        "standard_veeva_vault": "7 spokes -> MDM match/resolve -> update-only Bronze landing -> exception queue for unmatched MDM IDs.",
+        "kai_blind_datalake": "Retains full Veeva 7-spoke MDM & update-only Bronze discipline, plus cryptographic consent-purpose & patient/institute dividend verification before Silver/Gold promotion.",
+        "pharma_advantage": "Eliminates unconsented secondary model training and enforces real-time revocation across derived Gold cohorts."
+      },
+      {
+        "dimension": "2. Silver RE-ID Crosswalk Custody",
+        "standard_veeva_vault": "Swaps MDM ID for pseudonymous analytics key in Silver, but the RE-ID crosswalk typically resides in the same cloud tenant under IAM roles.",
+        "kai_blind_datalake": "Isolates the RE-ID crosswalk exclusively inside the hospital/custodian HSM enclave; zero network or role path exists from Silver, Gold, or KaiRos Lighthouse.",
+        "pharma_advantage": "Structural impossibility of sponsor or cloud-admin walk-back to patient MDM identity."
+      },
+      {
+        "dimension": "3. Data-in-Use Compute Perimeter",
+        "standard_veeva_vault": "Plaintext cloud warehouse/lakehouse analytics; external AI models require row export or direct plaintext table access.",
+        "kai_blind_datalake": "Sovereign Compute-to-Data Enclave: Hardware TEE attestation (PCR0 pinned) + Ring-LWE CKKS FHE for numeric circuits + fitted Stochastic Embedding Cloak for deep representations.",
+        "pharma_advantage": "Merck/Regeneron AI models touch live blind Gold cohorts without raw row export or vendor key possession."
+      },
+      {
+        "dimension": "4. Clinical AI Output Assurance",
+        "standard_veeva_vault": "Document/record management only; no cryptographic or clinical calibration gate on AI model outputs.",
+        "kai_blind_datalake": "KaiRos Lighthouse enforces fail-closed post-decryption calibration & clinical net-benefit assurance (catching silent FHE slope collapse before release).",
+        "pharma_advantage": "Prevents silent calibration collapse (e.g. AUC preserved while calibration slope explodes and clinical net benefit inverts)."
+      },
+      {
+        "dimension": "5. Audit Trail & Non-Equivocation",
+        "standard_veeva_vault": "Single-vendor database audit log; cannot defeat split-view equivocation if privileged state is altered.",
+        "kai_blind_datalake": "Private CT-style append-only Merkle transparency log signed by Org HSM, RFC 3161 trusted timestamp, and >=2 independent witness co-signatures.",
+        "pharma_advantage": "Mathematically verifiable non-equivocation and tamper evidence for FDA 21 CFR Part 11 & SOC 2 Processing Integrity diligence."
+      }
+    ]
+  }
+}
