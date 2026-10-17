@@ -37,7 +37,7 @@ target_executed: false
 ## 6. Clean-Room Verification & Test Obligations (`codexKai`)
 - [ ] **Contract Parity:** Re-implement the module entrypoints in Section 2 and exported bindings in Section 3 from scratch in an isolated directory without reading target source files.
 - [ ] **Boundary Mocking:** Provide clean mocks/adapters for every external SDK/IPC boundary listed in Section 4.
-- [ ] **Static Graph Equivalence:** Run `reakai_laya_bridge.py` on the new clean-room implementation and verify that its exported node kinds and entrypoint roles match Sections 2–4.
+- [ ] **Static Graph Equivalence:** Run `reakai_laya_bridge.py` on the new clean-room implementation and verify that its exported node kinds and entrypoint roles match Sections 2-4.
 - [ ] **Zero Target Mutation:** Confirm `target_hashes_unchanged=True` and `target_executed=False` in the accompanying JSON receipt.
 
 ## 7. Known Static Limitations

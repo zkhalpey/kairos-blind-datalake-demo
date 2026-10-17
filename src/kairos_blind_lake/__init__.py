@@ -1,4 +1,4 @@
-"""KaiRos Lighthouse & ATARI/Origin Blind DataLake (Kai Blind Platform / KBE).
+"""KaiRos Lighthouse & Kai Lake (Kai Blind Platform / KBE).
 
 Synthetic-only reference demonstrator combining:
 1. Veeva Vault-grade Patient CRM & AgentVerse MDM/Consent + Bronze/Silver/Gold Medallion governance
