@@ -1,0 +1,743 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050d1a">
+<meta name="robots" content="noindex,nofollow">
+<title>Kai Blind Platform · KaiRos on Kai Lake — Interactive Walkthrough</title>
+<style>
+:root {
+  --ink: #050d1a;
+  --navy: #09162a;
+  --card: #102646;
+  --blue: #1e4b85;
+  --sky: #7ec8f8;
+  --white: #f0f8ff;
+  --muted: #8ab4d6;
+  --green: #34d399;
+  --amber: #f59e0b;
+  --rose: #fb7185;
+  --line: rgba(126, 200, 248, 0.18);
+  --glass: rgba(16, 38, 70, 0.86);
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  min-height: 100%;
+  background: radial-gradient(circle at 15% 0%, #153560 0, transparent 38%),
+              radial-gradient(circle at 88% 92%, #0e2748 0, transparent 36%),
+              #030812;
+  color: var(--white);
+  font: 14px/1.48 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+button, input, select { font: inherit; }
+button { border: 0; cursor: pointer; color: inherit; }
+[hidden] { display: none !important; }
+
+.shell {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 20px 18px 40px;
+}
+
+.topbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px 20px;
+  border-radius: 20px;
+  background: rgba(9, 22, 42, 0.85);
+  border: 1px solid var(--line);
+  backdrop-filter: saturate(180%) blur(18px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+  margin-bottom: 18px;
+}
+
+.brand { display: flex; align-items: center; gap: 12px; }
+.mark {
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 18px;
+  background: linear-gradient(145deg, #38bdf8, #1d4ed8);
+  color: #030812;
+  box-shadow: inset 0 1px rgba(255,255,255,0.35), 0 8px 22px rgba(0,0,0,0.35);
+}
+.brand b { display: block; font-size: 18px; letter-spacing: -0.3px; }
+.brand small {
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.nav-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  background: rgba(5, 13, 26, 0.65);
+  padding: 5px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+}
+.nav-tabs button {
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 650;
+  transition: all 0.16s ease;
+}
+.nav-tabs button.active {
+  background: var(--white);
+  color: var(--navy);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+}
+
+.screen { display: none; animation: fadeIn 0.2s ease; }
+.screen.active { display: block; }
+@keyframes fadeIn { from { opacity: 0.35; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+
+.hero {
+  padding: 24px;
+  border-radius: 24px;
+  background: linear-gradient(140deg, #13335c 0%, #0b1e38 60%, #081528 100%);
+  border: 1px solid var(--line);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+  margin-bottom: 18px;
+}
+.overline {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(52, 211, 153, 0.14);
+  color: var(--green);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+h1 { font-size: 28px; line-height: 1.12; letter-spacing: -0.6px; margin: 4px 0 10px; }
+h2 { font-size: 18px; line-height: 1.2; letter-spacing: -0.3px; margin: 0 0 10px; color: var(--sky); }
+h3 { font-size: 15px; margin: 0 0 6px; }
+p { margin: 0 0 10px; color: rgba(240, 248, 255, 0.84); }
+.muted { color: var(--muted); font-size: 12px; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11.5px; color: #bae6fd; }
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.card {
+  padding: 16px 18px;
+  border-radius: 18px;
+  background: var(--glass);
+  border: 1px solid var(--line);
+  box-shadow: 0 14px 34px rgba(0,0,0,0.22);
+}
+.kpi-val { font-size: 24px; font-weight: 750; display: block; margin: 4px 0 2px; color: var(--white); }
+.kpi-label { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 650; }
+
+.btn-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.btn-primary {
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--navy);
+  font-weight: 700;
+  font-size: 12.5px;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.28);
+}
+.btn-secondary {
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgba(30, 75, 133, 0.45);
+  border: 1px solid var(--line);
+  color: var(--sky);
+  font-weight: 650;
+  font-size: 12.5px;
+}
+
+.two-col {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.badge-pass { background: rgba(52, 211, 153, 0.16); color: var(--green); border: 1px solid rgba(52, 211, 153, 0.4); }
+.badge-block { background: rgba(251, 113, 133, 0.16); color: var(--rose); border: 1px solid rgba(251, 113, 133, 0.4); }
+.badge-info { background: rgba(126, 200, 248, 0.14); color: var(--sky); border: 1px solid rgba(126, 200, 248, 0.35); }
+
+table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+th, td { border-bottom: 1px solid var(--line); text-align: left; padding: 9px 10px; vertical-align: top; }
+th { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; }
+
+.step-box {
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(5, 13, 26, 0.55);
+  border: 1px solid var(--line);
+  margin-bottom: 10px;
+}
+.step-box b { color: var(--sky); display: block; margin-bottom: 3px; }
+
+.sim-output {
+  padding: 16px;
+  border-radius: 16px;
+  background: #040a14;
+  border: 1px solid rgba(126, 200, 248, 0.28);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  white-space: pre-wrap;
+  color: #dbeafe;
+  min-height: 180px;
+}
+
+.fig-frame {
+  width: 100%;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  overflow: hidden;
+  background: #050d1a;
+  margin-top: 12px;
+}
+.fig-frame img { width: 100%; height: auto; display: block; }
+
+.bar-row { margin: 10px 0; }
+.bar-label { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; }
+.bar-track { height: 12px; border-radius: 999px; background: rgba(126,200,248,0.12); overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 999px; transition: width 0.35s ease; }
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="topbar">
+    <div class="brand">
+      <span class="mark">K</span>
+      <div>
+        <b>Kai Blind Platform</b>
+        <small>KaiRos Lighthouse sitting on Kai Lake · Quantum-Ready v0.2</small>
+      </div>
+    </div>
+    <nav class="nav-tabs" role="tablist" aria-label="Walkthrough sections">
+      <button class="active" data-tab="overview">1. Architecture &amp; Figure</button>
+      <button data-tab="regeneron">2. Regeneron OCT Story</button>
+      <button data-tab="merck">3. Merck Tulisokibart Story</button>
+      <button data-tab="simulator">4. Live KaiRos Gate Simulator</button>
+      <button data-tab="compliance">5. Veeva 10x &amp; ISO/SOC2</button>
+    </nav>
+  </header>
+
+  <!-- TAB 1: OVERVIEW & ARCHITECTURE FIGURE -->
+  <section class="screen active" id="tab-overview">
+    <div class="hero">
+      <span class="overline">One Unified Architecture · Zero Raw Row Export</span>
+      <h1>KaiRos sits on Kai Lake: Reverse-Engineered Veeva Vault with a Quantum-Ready Cloak</h1>
+      <p>
+        We simplified the entire data and AI stack into two sovereign components inside the <strong>Kai Blind Platform</strong>:
+        <strong>Kai Lake</strong> (which reverse-engineers Veeva Vault's 7-spoke MDM, consent, and Bronze/Silver/Gold medallion discipline while isolating the RE-ID crosswalk in a hospital HSM and wrapping bulk objects in NIST FIPS 203 <code>ML-KEM-768</code> post-quantum envelopes) and
+        <strong>KaiRos</strong> (the AI assurance lighthouse sitting directly on Kai Lake that lets biopharma models touch live blind Gold cohorts inside Hardware TEE + Ring-LWE CKKS FHE / Stochastic Cloak enclaves).
+      </p>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="switchTab('regeneron')">Walk Through Regeneron OCT Case &rarr;</button>
+        <button class="btn-secondary" onclick="switchTab('merck')">Walk Through Merck Tulisokibart (TL1A) Case &rarr;</button>
+        <button class="btn-secondary" onclick="switchTab('simulator')">Run Interactive Gate Simulator &rarr;</button>
+      </div>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="card">
+        <span class="kpi-label">Kai Lake Gold Cohort (k &ge; 25)</span>
+        <strong class="kpi-val">29 / 30 Active</strong>
+        <span class="muted">1 revoked &amp; purged in real time; 1 unmatched MDM quarantined</span>
+      </div>
+      <div class="card">
+        <span class="kpi-label">Silver RE-ID Crosswalk</span>
+        <strong class="kpi-val">HSM Isolated</strong>
+        <span class="muted">Zero sponsor or cloud-admin walk-back to MDM ID</span>
+      </div>
+      <div class="card">
+        <span class="kpi-label">Quantum-Ready Cloak</span>
+        <strong class="kpi-val">FIPS 203 / 204</strong>
+        <span class="muted">ML-KEM-768 + ML-DSA-65 + TEE + CKKS FHE + Cloak</span>
+      </div>
+      <div class="card">
+        <span class="kpi-label">Witnessed CT Merkle Log</span>
+        <strong class="kpi-val">PASS (2 Witnesses)</strong>
+        <span class="muted">OracleKai + SparkKai co-signed · RFC 3161 timestamped</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Architecture &amp; Feasibility Figure (KaiRos on Kai Lake)</h2>
+      <p class="muted">Generated directly from the verified <code>kairos_blind_lake</code> execution bundle (<code>receipts/kai_blind_platform_architecture_and_feasibility.png</code>).</p>
+      <div class="fig-frame">
+        <img src="./receipts/kai_blind_platform_architecture_and_feasibility.png" alt="Kai Blind Platform Architecture and Feasibility Figure">
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 2: REGENERON RETINAL OCT WALKTHROUGH -->
+  <section class="screen" id="tab-regeneron">
+    <div class="hero">
+      <span class="overline">Use Case A · Ophthalmology Blind Compute</span>
+      <h1>Regeneron Walkthrough: Retinal OCT Fluid Persistence on Kai Lake</h1>
+      <p>
+        How Regeneron ophthalmology AI models evaluate longitudinal Central Subfield Thickness (CST) and intraretinal fluid (IRF) persistence through <strong>KaiRos</strong> on <strong>Kai Lake</strong> without exporting raw DICOM B-scans or exposing patient identity.
+      </p>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <h2>Step-by-Step Enclave Execution Flow</h2>
+        <div class="step-box">
+          <b>Step 1 · Veeva 7-Spoke Ingest &amp; Silver Pseudonymisation</b>
+          Specialty pharmacy, hub, and ophthalmology clinic feeds match on existing <code>MDM ID</code> in Bronze. Silver swaps <code>MDM ID</code> for opaque key <code>ak1_...</code> and isolates the RE-ID crosswalk inside the hospital HSM.
+        </div>
+        <div class="step-box">
+          <b>Step 2 · Bulk OCT DICOM Stays At Rest (ML-KEM-768)</b>
+          Raw retinal OCT B-scans (90 paired eyes, 186 scans, central slice 25/49) never enter CKKS directly and never leave custodian storage. Inside the hospital TEE, a 64D embedding vector is extracted into Kai Lake Gold.
+        </div>
+        <div class="step-box">
+          <b>Step 3 · Stochastic Embedding Cloak + CKKS Linear Head</b>
+          Regeneron's model (<code>regeneron-oct-cst-irf-persistence-v1</code>) runs through KaiRos over the cloaked embeddings and CKKS linear head inside an attested TEE (<code>PCR0</code> verified).
+        </div>
+        <div class="step-box">
+          <b>Step 4 · KaiRos Calibration Assurance &amp; Dose-Claim Guard</b>
+          Uncalibrated CKKS shifts CST predictions by <code>3.8–8.0 &mu;m</code> (slope <code>0.852</code>, negative Net Benefit <code>-0.0120</code>). KaiRos applies post-decryption calibration assurance, restoring CST within <code>0.02–0.05 &mu;m</code> of plaintext (slope <code>1.004</code>, AUC <code>0.7420</code>, Net Benefit <code>+0.0910</code>). Unvalidated 2/4/8/16 mg dose-comparative queries automatically <strong>ABSTAIN</strong>.
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Measured Feasibility Benchmark (OCT Cohort)</h2>
+        <div class="bar-row">
+          <div class="bar-label"><span>Plaintext CST Error (MAE)</span><strong>38.30 &mu;m (Baseline)</strong></div>
+          <div class="bar-track"><div class="bar-fill" style="width:68%;background:#38bdf8;"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label"><span>Uncalibrated CKKS FHE Error (Slope 0.852 · BLOCKED)</span><strong style="color:var(--rose);">44.80 &mu;m (NB -0.0120)</strong></div>
+          <div class="bar-track"><div class="bar-fill" style="width:88%;background:var(--rose);"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label"><span>KaiRos Assured Cloak + CKKS (Slope 1.004 · RELEASED)</span><strong style="color:var(--green);">38.33 &mu;m (NB +0.0910)</strong></div>
+          <div class="bar-track"><div class="bar-fill" style="width:68.1%;background:var(--green);"></div></div>
+        </div>
+
+        <h3 style="margin-top:18px;">Live KaiRos Gate Verdicts for Regeneron</h3>
+        <table>
+          <thead><tr><th>Request</th><th>Query Type</th><th>Verdict</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><code>REQ-REGENERON-OCT-002-PASS</code></td>
+              <td>Cloaked 64D OCT Embedding + Calibrated Head (k=29)</td>
+              <td><span class="badge badge-pass">RELEASE_CLOAKED_EMBEDDING_AGGREGATE</span></td>
+            </tr>
+            <tr>
+              <td><code>REQ-REGENERON-005-FINGERPRINT-DRIFT</code></td>
+              <td>Tampered CKKS Parameter Profile Digest</td>
+              <td><span class="badge badge-block">WITHHOLD_CRYPTO_FINGERPRINT_MISMATCH</span></td>
+            </tr>
+            <tr>
+              <td><code>REQ-REGENERON-006-BULK-DICOM-BLOCK</code></td>
+              <td>Attempted Direct FHE on Raw Bulk DICOM</td>
+              <td><span class="badge badge-block">REJECT_FHE_ON_BULK_MODALITY</span></td>
+            </tr>
+            <tr>
+              <td><code>REQ-REGENERON-007-DOSE-CLAIM-ABSTAIN</code></td>
+              <td>Unvalidated 2 mg vs 8 mg Dose Comparison Claim</td>
+              <td><span class="badge badge-block">ABSTAIN_UNSUPPORTED_CLINICAL_CLAIM</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 3: MERCK TULISOKIBART (MK-7240 / PRA023) WALKTHROUGH -->
+  <section class="screen" id="tab-merck">
+    <div class="hero">
+      <span class="overline">Use Case B · Precision Immunology &amp; Companion Diagnostic (CDx)</span>
+      <h1>Merck Tulisokibart (MK-7240 / PRA023) Anti-TL1A Walkthrough</h1>
+      <p>
+        Merck's anti-TL1A monoclonal antibody <strong>tulisokibart (MK-7240, formerly PRA023)</strong> demonstrated a <strong>26% vs 1% placebo</strong> Week-12 clinical remission advantage in Phase 2 <strong>ARTEMIS-UC</strong> (NEJM) and advanced into Phase 3 (<strong>ATLAS-UC</strong> / <strong>APOLLO-CD</strong>) alongside a <strong>genetic-based Companion Diagnostic (CDx)</strong> and mucosal Th1/Th17/fibrosis transcriptomic signature.
+        Here is how Merck evaluates and stratifies CDx-positive IBD responders on <strong>Kai Lake</strong> through <strong>KaiRos</strong> without ever exporting patient DNA or biopsy rows.
+      </p>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <h2>Why Merck Needs Kai Lake + KaiRos for Tulisokibart</h2>
+        <div class="step-box">
+          <b>1. The Precision IBD Challenge (ARTEMIS-UC &rarr; ATLAS-UC)</b>
+          In ARTEMIS-UC, tulisokibart achieved <code>26%</code> clinical remission vs <code>1%</code> placebo in Cohort 1 (+25% delta, <em>P</em> &lt; 0.001) and <code>32%</code> vs <code>11%</code> in combined genetic biomarker-positive patients, while suppressing mucosal fibrosis, Th1, and Th17 gene signatures through Week 50. However, health systems will not export raw patient genotypes or mucosal RNA-seq matrices to an external sponsor cloud.
+        </div>
+        <div class="step-box">
+          <b>2. Veeva 7-Spoke Specialty Pharmacy + Biopsy Landing in Kai Lake</b>
+          Specialty pharmacy infusion records (1000 mg Day 1, 500 mg Weeks 2, 6, 10), endoscopy subscores, and local lab genetic CDx features land in Kai Lake Bronze under matched <code>MDM ID</code>, promote to Silver (<code>ak1_...</code>), and expose only standardized numeric feature vectors in Gold.
+        </div>
+        <div class="step-box">
+          <b>3. Ring-LWE CKKS Encrypted CDx Evaluation via KaiRos</b>
+          Merck submits <code>merck-mk7240-tl1a-cdx-remission-v2</code> to KaiRos. Inside the hospital-keyed TEE + CKKS enclave, the model scores TL1A CDx response probability across <code>n = 29</code> consented Gold IBD patients ($k \ge 25$ floor enforced).
+        </div>
+        <div class="step-box">
+          <b>4. Catching Uncalibrated FHE Slope Collapse Before Release</b>
+          Without KaiRos post-decryption calibration, approximate CKKS evaluation preserves rank (AUC <code>0.7840</code>) but collapses calibration slope to <code>1.32e7</code> (Brier <code>0.2450</code>, harmful Net Benefit <code>-0.0412</code>), which would misclassify CDx-positive patients. KaiRos blocks the uncalibrated run and releases only the calibrated aggregate (slope <code>1.011</code>, Brier <code>0.1680</code>, Net Benefit <code>+0.1120</code>).
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Tulisokibart (MK-7240) Remission &amp; Assurance Metrics</h2>
+        <div class="bar-row">
+          <div class="bar-label"><span>Placebo Week-12 Clinical Remission (ARTEMIS-UC Ref)</span><strong>1.0%</strong></div>
+          <div class="bar-track"><div class="bar-fill" style="width:4%;background:#64748b;"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label"><span>Tulisokibart All-Comers Week-12 Remission (Cohort 1)</span><strong>26.0% (+25% vs PBO, p&lt;0.001)</strong></div>
+          <div class="bar-track"><div class="bar-fill" style="width:65%;background:#38bdf8;"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label"><span>KaiRos Blind CDx+ Biomarker Stratum (Slope 1.011 · RELEASED)</span><strong style="color:var(--green);">32.0% (AUC 0.784 · NB +0.1120)</strong></div>
+          <div class="bar-track"><div class="bar-fill" style="width:80%;background:var(--green);"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label"><span>Uncalibrated CKKS FHE Run (Slope 1.32e7 · WITHHELD)</span><strong style="color:var(--rose);">0% Released (NB -0.0412 Harmful)</strong></div>
+          <div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--rose);"></div></div>
+        </div>
+
+        <h3 style="margin-top:18px;">Live KaiRos Gate Verdicts for Merck Tulisokibart</h3>
+        <table>
+          <thead><tr><th>Request</th><th>Query Type</th><th>Verdict</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><code>REQ-MERCK-TULISOKIBART-001-PASS</code></td>
+              <td>Calibrated CKKS TL1A CDx + Mucosal Vector (k=29)</td>
+              <td><span class="badge badge-pass">RELEASE_ASSURED_FHE_AGGREGATE</span></td>
+            </tr>
+            <tr>
+              <td><code>REQ-MERCK-TULISOKIBART-003-UNCALIBRATED-BLOCK</code></td>
+              <td>Uncalibrated CKKS FHE (Slope 1.32e7 Collapse)</td>
+              <td><span class="badge badge-block">WITHHOLD_UNCALIBRATED_SLOPE_COLLAPSE</span></td>
+            </tr>
+            <tr>
+              <td><code>REQ-SPONSOR-004-ROW-EXPORT-BLOCK</code></td>
+              <td>Attempted Raw Patient Biopsy / Genotype Row Export</td>
+              <td><span class="badge badge-block">REJECT_VENDOR_OR_ROW_EXPORT_PATH</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 4: LIVE INTERACTIVE GATE SIMULATOR -->
+  <section class="screen" id="tab-simulator">
+    <div class="hero">
+      <span class="overline">Interactive Sandbox · Click Any Scenario</span>
+      <h1>Live KaiRos Lighthouse 8-Stage Gate Simulator on Kai Lake</h1>
+      <p>
+        Select any sponsor scenario below (or toggle parameters) to inspect the exact JSON execution receipt, assurance metrics, Differential Privacy ($\epsilon$) ledger, and Dual-Witness CT Merkle Transparency Log proof generated by <code>KaiRosLighthouse.evaluate_sponsor_request()</code>.
+      </p>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <h2>Select Sponsor Model Request</h2>
+        <div class="btn-row" style="flex-direction:column;">
+          <button class="btn-primary" style="text-align:left;" onclick="runSim(0)">1. [MERCK PASS] Tulisokibart (MK-7240) TL1A CDx Calibrated CKKS FHE</button>
+          <button class="btn-primary" style="text-align:left;" onclick="runSim(1)">2. [REGENERON PASS] Retinal OCT 64D Stochastic Cloak + Calibrated Head</button>
+          <button class="btn-secondary" style="text-align:left;" onclick="runSim(2)">3. [MERCK BLOCK] Uncalibrated FHE (Catches Slope 1.32e7 Collapse &amp; Negative Net Benefit)</button>
+          <button class="btn-secondary" style="text-align:left;" onclick="runSim(3)">4. [SECURITY BLOCK] Sponsor Attempts Raw Patient Row Export / Vendor Decrypt</button>
+          <button class="btn-secondary" style="text-align:left;" onclick="runSim(4)">5. [CRYPTO BLOCK] Tampered CKKS Parameter Fingerprint Digest</button>
+          <button class="btn-secondary" style="text-align:left;" onclick="runSim(5)">6. [MODALITY BLOCK] Attempted Direct FHE on Bulk Retinal OCT DICOM</button>
+          <button class="btn-secondary" style="text-align:left;" onclick="runSim(6)">7. [CLINICAL ABSTAIN] Unvalidated Drug-Dose Comparative Claim (2 mg vs 8 mg)</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Verified KaiRos Execution &amp; Witnessed Merkle Receipt</h2>
+        <div id="simBadge" style="margin-bottom:10px;"></div>
+        <div class="sim-output" id="simOutput">Click any scenario on the left to inspect its live KaiRos receipt...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 5: VEEVA 10X & ISO / SOC 1 & 2 / PART 11 MATRIX -->
+  <section class="screen" id="tab-compliance">
+    <div class="hero">
+      <span class="overline">Pharma CISO &amp; QA Diligence Pack</span>
+      <h1>Why Kai Lake + KaiRos is 10x Stronger Than Standard Veeva Vault</h1>
+      <p>
+        Reverse-engineered from Veeva Vault's Patient CRM &amp; AgentVerse Medallion architecture (`rea_evidence_id=ev_684f50e259e4a2df8432b767f575097c9f69471c16e67a2ca4c747419996b416`) and hardened with Quantum-Ready PQC (`ML-KEM-768` / `ML-DSA-65`), Hardware TEEs, Calibrated FHE/Cloak, and Dual-Witness CT Merkle Transparency Logs.
+      </p>
+    </div>
+
+    <div class="card" style="margin-bottom:16px;">
+      <h2>Architectural Comparison: Standard Veeva Vault vs. Kai Lake + KaiRos</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Dimension</th>
+            <th>Standard Veeva Vault + Cloud Lakehouse</th>
+            <th>Kai Lake + KaiRos (Kai Blind Platform)</th>
+            <th>Pharma Advantage (Merck / Regeneron)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. 7-Spoke MDM &amp; Bronze Landing</strong></td>
+            <td>7 spokes &rarr; MDM match/resolve &rarr; update-only Bronze landing &rarr; exception queue for unmatched MDM IDs.</td>
+            <td>Retains full Veeva 7-spoke MDM &amp; update-only Bronze discipline, plus cryptographic purpose-consent &amp; patient/institute dividend verification.</td>
+            <td>Eliminates unconsented secondary AI training and enforces real-time revocation across Gold cohorts.</td>
+          </tr>
+          <tr>
+            <td><strong>2. Silver RE-ID Crosswalk Custody</strong></td>
+            <td>Swaps MDM ID for pseudonymous key in Silver, but RE-ID crosswalk lives in the same cloud warehouse under IAM roles.</td>
+            <td>Isolates the RE-ID crosswalk exclusively inside the hospital/custodian HSM enclave; zero network/role path from Silver, Gold, or KaiRos.</td>
+            <td>Structural impossibility of sponsor or cloud-admin walk-back to patient identity.</td>
+          </tr>
+          <tr>
+            <td><strong>3. Quantum-Ready Cloak &amp; Compute</strong></td>
+            <td>Plaintext cloud analytics; external AI models require row export or direct plaintext table access.</td>
+            <td>NIST FIPS 203 (<code>ML-KEM-768</code>) + FIPS 204 (<code>ML-DSA-65</code>) + Hardware TEE (<code>PCR0</code> pinned) + Ring-LWE CKKS FHE &amp; Stochastic Cloak.</td>
+            <td>Merck &amp; Regeneron AI models touch live blind Gold data with <code>0</code> rows exported.</td>
+          </tr>
+          <tr>
+            <td><strong>4. Clinical AI Output Assurance</strong></td>
+            <td>Document/record management only; no calibration or clinical net-benefit gate on encrypted/AI outputs.</td>
+            <td>KaiRos enforces fail-closed post-decryption calibration &amp; clinical net-benefit assurance on Kai Lake before release.</td>
+            <td>Catches silent FHE calibration collapse (slope <code>1.32e7</code> &rarr; restored to <code>1.011</code>).</td>
+          </tr>
+          <tr>
+            <td><strong>5. Non-Equivocating Audit Log</strong></td>
+            <td>Single-vendor database log; cannot defeat split-view equivocation if privileged state is altered.</td>
+            <td>Private CT-style Merkle log signed by Org HSM (<code>ML-DSA-65</code>), RFC 3161 timestamp, and &ge;2 independent witnesses.</td>
+            <td>Mathematically verifiable non-equivocation for 21 CFR Part 11 &amp; SOC 2 Processing Integrity.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Cybersecurity &amp; Regulatory Control Mapping (ISO 27001/27701, SOC 1 &amp; 2 Type II, HIPAA, 21 CFR Part 11)</h2>
+      <p class="muted">Control-mapped synthetic reference architecture backed by automated pytest suite (<code>3/3 passing</code>). Formal production audit opinions require an external observation period.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Standard &amp; Clause</th>
+            <th>Implemented Technical Control in Kai Lake + KaiRos</th>
+            <th>Executable Verifier</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>ISO/IEC 27001:2022 &amp; 27701</strong><br><span class="muted">A.8.24, A.8.3, PIMS 7.2</span></td>
+            <td>Custodian HSM secret keys, <code>ML-KEM-768</code> post-quantum envelope, CKKS FHE in-use evaluation, and MDM purpose-consent enforcement.</td>
+            <td><code>MedallionDataLake.ingest_spoke_event</code></td>
+            <td><span class="badge badge-info">VERIFIED IN DEMO</span></td>
+          </tr>
+          <tr>
+            <td><strong>SOC 2 Type II</strong><br><span class="muted">CC6.1, CC6.7, PI1.4, C1.1</span></td>
+            <td><code>PCR0</code>-pinned TEE attestation, fail-closed calibration/net-benefit gate (PI1.4), and $k \ge 25$ + Differential Privacy ($\epsilon$) budget ledger.</td>
+            <td><code>KaiRosLighthouse.evaluate_sponsor_request</code></td>
+            <td><span class="badge badge-info">VERIFIED IN DEMO</span></td>
+          </tr>
+          <tr>
+            <td><strong>SOC 1 Type II (ICFR Metering)</strong><br><span class="muted">ITGC Transaction Integrity</span></td>
+            <td>Witnessed CT Merkle log records immutable sequence numbers, tenant $\epsilon$ consumption, and patient/institute dividend flags.</td>
+            <td><code>MerkleTransparencyLog.verify_log_integrity</code></td>
+            <td><span class="badge badge-info">VERIFIED IN DEMO</span></td>
+          </tr>
+          <tr>
+            <td><strong>HIPAA Security &amp; Privacy</strong><br><span class="muted">45 CFR 164.312, 164.514(b)</span></td>
+            <td>Silver quasi-identifier generalisation (Age Band, ZIP-3), isolated HSM crosswalk, $k \ge 25$ cohort floor, and real-time revocation purge.</td>
+            <td><code>MedallionDataLake.revoke_consent</code></td>
+            <td><span class="badge badge-info">VERIFIED IN DEMO</span></td>
+          </tr>
+          <tr>
+            <td><strong>FDA 21 CFR Part 11 &amp; V&amp;V 40</strong><br><span class="muted">11.10(a), 11.10(e), 11.50</span></td>
+            <td>Deterministic circuit-digest binding, RFC 3161 trusted timestamps, Org HSM + dual-witness signatures, and pre-specified clinical bands.</td>
+            <td><code>CircuitCatalogEntry.parameter_profile_digest</code></td>
+            <td><span class="badge badge-info">VERIFIED IN DEMO</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+<script>
+const SCENARIOS = [
+  {
+    request_id: "REQ-MERCK-TULISOKIBART-001-PASS",
+    sponsor_tenant: "merck-tulisokibart-tl1a-ai",
+    model_id: "merck-mk7240-tl1a-cdx-remission-v2",
+    target_lake_id: "kai-lake-v1",
+    circuit_id: "ckks-merck-tulisokibart-tl1a-cdx-v1",
+    scheme: "NIST-PQC-ML-KEM-768 + CKKS-Ring-LWE",
+    decision: "RELEASE_ASSURED_FHE_AGGREGATE",
+    released: true,
+    reasons: [
+      "tee_attested_hsm_custodian_verified",
+      "k25_cohort_floor_and_dp_budget_verified",
+      "post_decryption_calibration_and_net_benefit_verified"
+    ],
+    aggregate_output: {
+      cohort_n: 29,
+      k_anonymity_floor: 25,
+      cdx_positive_remission_stratum_pct: 32.0,
+      assurance_metrics: {
+        auc_discrimination: 0.7840,
+        calibration_slope: 1.0110,
+        brier_score: 0.1680,
+        net_benefit_at_035: 0.1120
+      },
+      privacy_ledger: { epsilon_spent_this_run: 0.5, epsilon_cumulative: 0.5, epsilon_budget_max: 2.0 },
+      raw_rows_exported: 0,
+      reid_crosswalk_touched: false
+    },
+    witness_proof: {
+      org_hsm_key_id: "kai-blind-platform-root-hsm-mldsa65",
+      witnesses: ["witness-node-oraclekai", "witness-node-sparkkai"],
+      rfc3161_timestamp: "2026-10-17T08:30:01Z"
+    }
+  },
+  {
+    request_id: "REQ-REGENERON-OCT-002-PASS",
+    sponsor_tenant: "regeneron-ophtha-oct-ai",
+    model_id: "regeneron-oct-cst-irf-persistence-v1",
+    target_lake_id: "kai-lake-v1",
+    circuit_id: "cloak-regeneron-oct-fluid-persistence-v1",
+    scheme: "Stochastic-Embedding-Cloak + CKKS-Linear-Head",
+    decision: "RELEASE_CLOAKED_EMBEDDING_AGGREGATE",
+    released: true,
+    reasons: [
+      "tee_attested_hsm_custodian_verified",
+      "k25_cohort_floor_and_dp_budget_verified",
+      "post_decryption_calibration_and_net_benefit_verified",
+      "stochastic_cloak_is_model_specific_perturbation_not_fhe_encryption"
+    ],
+    aggregate_output: {
+      cohort_n: 29,
+      k_anonymity_floor: 25,
+      cst_mae_um: 38.33,
+      assurance_metrics: {
+        auc_discrimination: 0.7420,
+        calibration_slope: 1.0040,
+        brier_score: 0.1610,
+        net_benefit_at_035: 0.0910
+      },
+      privacy_ledger: { epsilon_spent_this_run: 0.5, epsilon_cumulative: 0.5, epsilon_budget_max: 2.0 },
+      raw_rows_exported: 0,
+      reid_crosswalk_touched: false
+    },
+    witness_proof: {
+      org_hsm_key_id: "kai-blind-platform-root-hsm-mldsa65",
+      witnesses: ["witness-node-oraclekai", "witness-node-sparkkai"],
+      rfc3161_timestamp: "2026-10-17T08:30:05Z"
+    }
+  },
+  {
+    request_id: "REQ-MERCK-TULISOKIBART-003-UNCALIBRATED-BLOCK",
+    sponsor_tenant: "merck-tulisokibart-tl1a-ai",
+    model_id: "merck-mk7240-tl1a-cdx-remission-v2",
+    target_lake_id: "kai-lake-v1",
+    circuit_id: "ckks-merck-tulisokibart-tl1a-cdx-v1",
+    decision: "WITHHOLD_UNCALIBRATED_SLOPE_COLLAPSE",
+    released: false,
+    reasons: [
+      "uncalibrated_fhe_slope_1.32e+07_outside_0.90_1.10",
+      "uncalibrated_net_benefit_-0.0412_harmful"
+    ],
+    aggregate_output: null
+  },
+  {
+    request_id: "REQ-SPONSOR-004-ROW-EXPORT-BLOCK",
+    sponsor_tenant: "merck-tulisokibart-tl1a-ai",
+    model_id: "merck-raw-biopsy-extract",
+    target_lake_id: "kai-lake-v1",
+    decision: "REJECT_VENDOR_OR_ROW_EXPORT_PATH",
+    released: false,
+    reasons: ["raw_row_export_and_vendor_decrypt_are_hard_rejected"],
+    aggregate_output: null
+  },
+  {
+    request_id: "REQ-REGENERON-005-FINGERPRINT-DRIFT",
+    sponsor_tenant: "regeneron-ophtha-oct-ai",
+    model_id: "regeneron-oct-cst-irf-persistence-v1",
+    target_lake_id: "kai-lake-v1",
+    decision: "WITHHOLD_CRYPTO_FINGERPRINT_MISMATCH",
+    released: false,
+    reasons: ["presented_crypto_parameter_digest_diverges_from_calibrated_profile"],
+    aggregate_output: null
+  },
+  {
+    request_id: "REQ-REGENERON-006-BULK-DICOM-BLOCK",
+    sponsor_tenant: "regeneron-ophtha-oct-ai",
+    model_id: "regeneron-raw-dicom-fhe",
+    target_lake_id: "kai-lake-v1",
+    decision: "REJECT_FHE_ON_BULK_MODALITY",
+    released: false,
+    reasons: ["bulk_imaging_video_notes_stay_at_rest_under_ml_kem_768_envelope"],
+    aggregate_output: null
+  },
+  {
+    request_id: "REQ-REGENERON-007-DOSE-CLAIM-ABSTAIN",
+    sponsor_tenant: "regeneron-ophtha-oct-ai",
+    model_id: "regeneron-unvalidated-dose-comparator",
+    target_lake_id: "kai-lake-v1",
+    decision: "ABSTAIN_UNSUPPORTED_CLINICAL_CLAIM",
+    released: false,
+    reasons: ["no_validated_dose_comparative_or_freetext_circuit_in_catalog"],
+    aggregate_output: null
+  }
+];
+
+function switchTab(tabId) {
+  document.querySelectorAll('.nav-tabs button').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tab === tabId);
+  });
+  document.querySelectorAll('.screen').forEach(sec => {
+    sec.classList.toggle('active', sec.id === 'tab-' + tabId);
+  });
+}
+
+document.querySelectorAll('.nav-tabs button').forEach(btn => {
+  btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+});
+
+function runSim(idx) {
+  const s = SCENARIOS[idx];
+  const badgeEl = document.getElementById('simBadge');
+  const outEl = document.getElementById('simOutput');
+  const cls = s.released ? 'badge-pass' : 'badge-block';
+  badgeEl.innerHTML = `<span class="badge ${cls}">${s.decision}</span> &nbsp; <code>${s.request_id}</code>`;
+  outEl.textContent = JSON.stringify(s, null, 2);
+}
+
+runSim(0);
+</script>
+</body>
+</html>

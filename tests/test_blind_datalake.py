@@ -117,9 +117,9 @@ def test_end_to_end_demo_merck_and_regeneron_scenarios(tmp_path: Path) -> None:
         r["receipt"]["request_id"]: (r["receipt"]["decision"], r["receipt"]["released"])
         for r in bundle["sponsor_runs"]
     }
-    assert decisions["REQ-MERCK-001-PASS"] == ("RELEASE_ASSURED_FHE_AGGREGATE", True)
-    assert decisions["REQ-REGENERON-002-PASS"] == ("RELEASE_CLOAKED_EMBEDDING_AGGREGATE", True)
-    assert decisions["REQ-MERCK-003-UNCALIBRATED-BLOCK"] == ("WITHHOLD_UNCALIBRATED_SLOPE_COLLAPSE", False)
+    assert decisions["REQ-MERCK-TULISOKIBART-001-PASS"] == ("RELEASE_ASSURED_FHE_AGGREGATE", True)
+    assert decisions["REQ-REGENERON-OCT-002-PASS"] == ("RELEASE_CLOAKED_EMBEDDING_AGGREGATE", True)
+    assert decisions["REQ-MERCK-TULISOKIBART-003-UNCALIBRATED-BLOCK"] == ("WITHHOLD_UNCALIBRATED_SLOPE_COLLAPSE", False)
     assert decisions["REQ-SPONSOR-004-ROW-EXPORT-BLOCK"] == ("REJECT_VENDOR_OR_ROW_EXPORT_PATH", False)
     assert decisions["REQ-REGENERON-005-FINGERPRINT-DRIFT"] == ("WITHHOLD_CRYPTO_FINGERPRINT_MISMATCH", False)
     assert decisions["REQ-REGENERON-006-BULK-DICOM-BLOCK"] == ("REJECT_FHE_ON_BULK_MODALITY", False)
