@@ -1,6 +1,6 @@
 {
   "schema": "kai-blind-platform-kai-lake-kairos-bundle-v3",
-  "platform": "Origin's AI Kai Platform \u2014 Powered by KaiRos Lighthouse on Kai Lake (Licensed via Z-Cor LLC / ATARI AI LLC)",
+  "platform": "Origin's AI Kai Platform - Powered by KaiRos Lighthouse on Kai Lake (Licensed via Z-Cor LLC / ATARI AI LLC)",
   "claim_boundary": "SYNTHETIC_REFERENCE_ARCHITECTURE_NO_PHI_TIER_BC_IP_HELD",
   "quantum_ready_posture": {
     "kem_at_rest_and_transit": "NIST FIPS 203 (ML-KEM-768)",

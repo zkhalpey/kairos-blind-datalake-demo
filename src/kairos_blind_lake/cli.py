@@ -402,7 +402,7 @@ def run_full_demo(output_dir: Path | None = None) -> dict[str, Any]:
 
     bundle = {
         "schema": "kai-blind-platform-kai-lake-kairos-bundle-v3",
-        "platform": "Origin's AI Kai Platform — Powered by KaiRos Lighthouse on Kai Lake (Licensed via Z-Cor LLC / ATARI AI LLC)",
+        "platform": "Origin's AI Kai Platform - Powered by KaiRos Lighthouse on Kai Lake (Licensed via Z-Cor LLC / ATARI AI LLC)",
         "claim_boundary": "SYNTHETIC_REFERENCE_ARCHITECTURE_NO_PHI_TIER_BC_IP_HELD",
         "quantum_ready_posture": {
             "kem_at_rest_and_transit": "NIST FIPS 203 (ML-KEM-768)",
@@ -515,7 +515,7 @@ def render_dashboard_html(bundle: dict[str, Any]) -> str:
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Origin's AI Kai Platform — KaiRos on Kai Lake Interactive Receipt (v0.3)</title>
+<title>Origin's AI Kai Platform - KaiRos on Kai Lake Interactive Receipt (v0.3)</title>
 <style>
   .kai-container {{
     color: var(--foreground, #e2e8f0);
@@ -543,7 +543,7 @@ def render_dashboard_html(bundle: dict[str, Any]) -> str:
 </head>
 <body>
 <div class="kai-container">
-  <h1>Origin's AI Kai Platform — Powered by KaiRos Lighthouse on Kai Lake (v0.3)</h1>
+  <h1>Origin's AI Kai Platform - Powered by KaiRos Lighthouse on Kai Lake (v0.3)</h1>
   <p class="subtitle">
     Cloaked Veeva-Like 7-Spoke MDM + Bronze/Silver/Gold Medallion Lake with Quantum-Ready Enclave
     (NIST FIPS 203 ML-KEM-768, FIPS 204 ML-DSA-65, Hardware TEE, Anti-Replay Nonce, Differencing Guard, Ring-LWE CKKS FHE &amp; Stochastic Cloak).
