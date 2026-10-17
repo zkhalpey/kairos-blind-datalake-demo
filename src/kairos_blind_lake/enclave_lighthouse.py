@@ -1,19 +1,26 @@
-"""KaiRos Lighthouse & Sovereign Blind Enclave Execution Engine.
+"""KaiRos Lighthouse & Sovereign Blind Enclave Execution Engine on Kai Lake (v0.3).
 
-Enforces the boundary where external biopharma models (e.g., Merck, Regeneron)
-touch live blind data in the Gold Medallion layer through KaiRos Lighthouse:
-1. Hardware TEE Enclave Attestation check (PCR0/measurement allowlist + freshness)
-2. Custodian-held HSM key isolation (vendor/sponsor never receives secret keys or raw rows)
-3. KBE Kernel modality & circuit routing (numeric CKKS FHE vs model-specific Stochastic Embedding Cloak)
-4. Public-Safe Black-Box Output Assurance Gate (verifies discrimination, calibration slope, Brier score,
-   and clinical net benefit at threshold without exposing Tier B/C internal CAPC fitting code)
-5. Differential Privacy & k-Anonymity floor (n >= 25 distinct patients, cumulative epsilon accounting)
+Enforces the 11-stage fail-closed boundary where external biopharma models
+(e.g., Merck Tulisokibart/TL1A, Regeneron Retinal OCT) touch live blind data in
+the Kai Lake Gold Medallion layer through KaiRos:
+1. Synthetic-first boundary check
+2. Zero row export & zero vendor/sponsor decrypt
+3. Hardware TEE Enclave Attestation (PCR0 allowlist) + Anti-Replay Verifier Nonce + Ephemeral Key-Wrapping TTL (<300s)
+4. Cryptographic Model-Weight Signature (NIST FIPS 204 ML-DSA-65) & Egress-Zero Sandbox Attestation
+5. Bulk modality block (DICOM/video/free-text stay at rest under ML-KEM-768) & unvalidated drug-dose claim abstention
+6. k-Anonymity Cohort Floor (n >= 25 distinct consented Gold patients)
+7. Reconstruction / Differencing Overlap Guard (blocks repeated queries whose symmetric cohort difference is < 3 patients)
+8. Differential Privacy Cumulative Epsilon Budget Accounting
+9. Circuit Catalog & Cryptographic Parameter Fingerprint Binding
+10. Post-Decryption Clinical Output Assurance Gate (verifies discrimination, calibration slope [0.90, 1.10], Brier score, and clinical net benefit > 0)
+11. Dual-Witness CT Merkle Transparency Log commitment
 """
 
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 import hashlib
+import hmac
 import json
 import math
 from typing import Any
@@ -23,6 +30,8 @@ from .transparency_log import MerkleTransparencyLog
 
 
 MIN_COHORT_K_ANONYMITY = 25
+MIN_SYMMETRIC_DIFF_PATIENTS = 3
+MAX_ATTESTATION_TTL_SECONDS = 300
 
 
 def _canonical_sha256(obj: Any) -> str:
@@ -30,14 +39,29 @@ def _canonical_sha256(obj: Any) -> str:
     return hashlib.sha256(payload).hexdigest()
 
 
+def sign_model_package_mldsa65(
+    sponsor_signing_secret: bytes,
+    *,
+    sponsor_tenant: str,
+    model_id: str,
+    model_weights_sha256: str,
+    circuit_id: str,
+) -> str:
+    """Simulate NIST FIPS 204 (ML-DSA-65) signature over model weights + circuit ID."""
+    msg = f"mldsa65-model-sig-v1\x00{sponsor_tenant}\x00{model_id}\x00{model_weights_sha256}\x00{circuit_id}".encode("utf-8")
+    return hmac.new(sponsor_signing_secret, msg, hashlib.sha256).hexdigest()
+
+
 @dataclass(frozen=True)
 class EnclaveAttestation:
     enclave_id: str
-    tee_architecture: str  # e.g. "AWS-Nitro-Enclave-v2" or "Azure-Confidential-SEV-SNP"
+    tee_architecture: str  # e.g. "AWS-Nitro-Enclave-v2 + ML-KEM-768"
     pcr0_measurement_sha256: str
     ephemeral_public_key_sha256: str
     verifier_nonce: str
+    key_ttl_seconds: int
     freshness_ok: bool
+    egress_zero_sandbox_attested: bool
     key_custodian: str  # must be hospital/custodian HSM, never vendor or sponsor
 
 
@@ -45,7 +69,7 @@ class EnclaveAttestation:
 class CircuitCatalogEntry:
     circuit_id: str
     modality: str  # "numeric_vector" | "embedding_cloak"
-    scheme: str  # "CKKS-Ring-LWE" | "Stochastic-Embedding-Cloak"
+    scheme: str  # "NIST-PQC-ML-KEM-768 + CKKS-Ring-LWE" | "Stochastic-Embedding-Cloak + CKKS-Linear-Head"
     n_features: int
     library_pinned: str
     parameter_profile_digest: str
@@ -64,7 +88,7 @@ class CircuitCatalogEntry:
 @dataclass(frozen=True)
 class SponsorModelRequest:
     request_id: str
-    sponsor_tenant: str  # e.g. "merck-research-labs" | "regeneron-genetics-center"
+    sponsor_tenant: str  # e.g. "merck-tulisokibart-tl1a-ai" | "regeneron-ophtha-oct-ai"
     model_id: str
     model_weights_sha256: str
     target_lake_id: str
@@ -77,11 +101,14 @@ class SponsorModelRequest:
     requested_row_export: bool
     epsilon_cost: float
     timestamp_utc: str
+    verifier_nonce: str = "nonce-default-001"
+    model_mldsa65_signature: str | None = None
+    cohort_filter_exclude_keys: tuple[str, ...] = ()
     synthetic: bool = True
 
 
 class KaiRosLighthouse:
-    """The KaiRos Lighthouse control plane mediating sponsor AI models over the Blind DataLake."""
+    """The KaiRos Lighthouse control plane sitting on Kai Lake."""
 
     def __init__(
         self,
@@ -90,12 +117,16 @@ class KaiRosLighthouse:
         circuits: dict[str, CircuitCatalogEntry],
         transparency_log: MerkleTransparencyLog,
         tenant_privacy_budgets: dict[str, float],
+        sponsor_signing_secret: bytes = b"kai-blind-platform-sponsor-mldsa65-key!",
     ) -> None:
         self.allowed_pcr0_measurements = allowed_pcr0_measurements
         self.circuits = circuits
         self.transparency_log = transparency_log
         self.tenant_privacy_budgets = dict(tenant_privacy_budgets)
         self.tenant_privacy_spent: dict[str, float] = {k: 0.0 for k in tenant_privacy_budgets}
+        self._sponsor_signing_secret = sponsor_signing_secret
+        self._used_verifier_nonces: set[str] = set()
+        self._tenant_prior_cohort_sets: dict[str, list[frozenset[str]]] = {}
 
     def evaluate_sponsor_request(
         self,
@@ -103,7 +134,7 @@ class KaiRosLighthouse:
         lake: MedallionDataLake,
         attestation: EnclaveAttestation,
     ) -> dict[str, Any]:
-        """Execute fail-closed 8-stage gate before any aggregate leaves the KaiRos Lighthouse."""
+        """Execute fail-closed 11-stage gate before any aggregate leaves KaiRos."""
         reasons: list[str] = []
 
         # Gate 1: Synthetic-first boundary
@@ -131,20 +162,59 @@ class KaiRosLighthouse:
                 aggregate_output=None,
             )
 
-        # Gate 3: Hardware TEE Enclave Attestation & Freshness
+        # Gate 3: Hardware TEE Enclave Attestation + Anti-Replay Verifier Nonce + Ephemeral Key TTL
         if (
             not attestation.freshness_ok
             or attestation.pcr0_measurement_sha256 not in self.allowed_pcr0_measurements
+            or attestation.key_ttl_seconds <= 0
+            or attestation.key_ttl_seconds > MAX_ATTESTATION_TTL_SECONDS
         ):
             return self._emit_decision(
                 request, lake, attestation,
-                decision="WITHHOLD_INVALID_TEE_ATTESTATION",
+                decision="WITHHOLD_INVALID_TEE_ATTESTATION_OR_TTL",
                 released=False,
-                reasons=["tee_enclave_pcr0_measurement_or_freshness_failed"],
+                reasons=["tee_enclave_pcr0_measurement_freshness_or_ephemeral_key_ttl_failed"],
                 aggregate_output=None,
             )
 
-        # Gate 4: Bulk modality & unvalidated drug-dose claim block
+        if not request.verifier_nonce or request.verifier_nonce in self._used_verifier_nonces:
+            return self._emit_decision(
+                request, lake, attestation,
+                decision="REJECT_REPLAYED_VERIFIER_NONCE",
+                released=False,
+                reasons=[f"verifier_nonce_{request.verifier_nonce}_already_consumed_anti_replay_triggered"],
+                aggregate_output=None,
+            )
+        self._used_verifier_nonces.add(request.verifier_nonce)
+
+        # Gate 4: Egress-Zero Sandbox Attestation & ML-DSA-65 Model-Weight Signature Verification
+        if not attestation.egress_zero_sandbox_attested:
+            return self._emit_decision(
+                request, lake, attestation,
+                decision="REJECT_SANDBOX_EGRESS_NOT_ZERO",
+                released=False,
+                reasons=["enclave_sandbox_must_attest_zero_outbound_network_egress"],
+                aggregate_output=None,
+            )
+
+        if request.model_mldsa65_signature is not None:
+            expected_sig = sign_model_package_mldsa65(
+                self._sponsor_signing_secret,
+                sponsor_tenant=request.sponsor_tenant,
+                model_id=request.model_id,
+                model_weights_sha256=request.model_weights_sha256,
+                circuit_id=request.circuit_id or "",
+            )
+            if not hmac.compare_digest(request.model_mldsa65_signature, expected_sig):
+                return self._emit_decision(
+                    request, lake, attestation,
+                    decision="REJECT_INVALID_MODEL_MLDSA65_SIGNATURE",
+                    released=False,
+                    reasons=["post_quantum_mldsa65_model_weight_signature_verification_failed"],
+                    aggregate_output=None,
+                )
+
+        # Gate 5: Bulk modality & unvalidated drug-dose claim block
         if request.modality in {"dicom", "video", "waveform", "free_text"}:
             return self._emit_decision(
                 request, lake, attestation,
@@ -162,8 +232,10 @@ class KaiRosLighthouse:
                 aggregate_output=None,
             )
 
-        # Gate 5: k-Anonymity Cohort Floor (n >= 25 distinct consented Gold patients)
-        distinct_keys = {r.opaque_analytics_key for r in lake.gold}
+        # Gate 6: k-Anonymity Cohort Floor (n >= 25 distinct consented Gold patients)
+        excluded = set(request.cohort_filter_exclude_keys)
+        active_gold = [r for r in lake.gold if r.opaque_analytics_key not in excluded]
+        distinct_keys = frozenset(r.opaque_analytics_key for r in active_gold)
         cohort_n = len(distinct_keys)
         if cohort_n < MIN_COHORT_K_ANONYMITY:
             return self._emit_decision(
@@ -174,7 +246,22 @@ class KaiRosLighthouse:
                 aggregate_output=None,
             )
 
-        # Gate 6: Differential Privacy Cumulative Budget Accounting
+        # Gate 7: Reconstruction / Differencing Overlap Guard (blocks near-identical sub-cohorts differing by < 3 patients)
+        prior_sets = self._tenant_prior_cohort_sets.setdefault(request.sponsor_tenant, [])
+        for prior_set in prior_sets:
+            sym_diff = len(distinct_keys.symmetric_difference(prior_set))
+            if 0 < sym_diff < MIN_SYMMETRIC_DIFF_PATIENTS:
+                return self._emit_decision(
+                    request, lake, attestation,
+                    decision="REJECT_DIFFERENCING_RECONSTRUCTION_ATTACK",
+                    released=False,
+                    reasons=[
+                        f"symmetric_cohort_difference_{sym_diff}_below_minimum_{MIN_SYMMETRIC_DIFF_PATIENTS}_patients_reconstruction_blocked"
+                    ],
+                    aggregate_output=None,
+                )
+
+        # Gate 8: Differential Privacy Cumulative Budget Accounting
         budget_max = self.tenant_privacy_budgets.get(request.sponsor_tenant, 0.0)
         spent = self.tenant_privacy_spent.get(request.sponsor_tenant, 0.0)
         if request.epsilon_cost <= 0 or (spent + request.epsilon_cost) > budget_max:
@@ -186,7 +273,7 @@ class KaiRosLighthouse:
                 aggregate_output=None,
             )
 
-        # Gate 7: Circuit Catalog & Cryptographic Parameter Fingerprint Binding
+        # Gate 9: Circuit Catalog & Cryptographic Parameter Fingerprint Binding
         circuit = self.circuits.get(request.circuit_id or "")
         if circuit is None:
             return self._emit_decision(
@@ -205,9 +292,7 @@ class KaiRosLighthouse:
                 aggregate_output=None,
             )
 
-        # Gate 8: Clinical Output Assurance Gate (Discrimination, Calibration Slope & Net Benefit)
-        # Demonstrates the Paper 1 / OLIVES finding: uncalibrated approximate FHE preserves AUC
-        # but collapses calibration slope (e.g. 1.32e7) and inverts clinical net benefit (< 0).
+        # Gate 10: Clinical Output Assurance Gate (Discrimination, Calibration Slope & Net Benefit)
         if not request.apply_post_decryption_assurance:
             slope_ok = 0.90 <= circuit.uncalibrated_slope <= 1.10
             nb_ok = circuit.uncalibrated_net_benefit_at_035 > 0.0
@@ -223,8 +308,9 @@ class KaiRosLighthouse:
                     aggregate_output=None,
                 )
 
-        # Compute bounded aggregate over Gold layer inside the enclave
-        mean_score = self._compute_bounded_gold_aggregate(lake.gold, request.modality)
+        # Record approved cohort set for differencing protection & compute bounded aggregate
+        prior_sets.append(distinct_keys)
+        mean_score = self._compute_bounded_gold_aggregate(active_gold, request.modality)
         self.tenant_privacy_spent[request.sponsor_tenant] = round(spent + request.epsilon_cost, 4)
 
         decision_label = (
@@ -232,8 +318,8 @@ class KaiRosLighthouse:
             if circuit.modality == "embedding_cloak"
             else "RELEASE_ASSURED_FHE_AGGREGATE"
         )
-        reasons.append("tee_attested_hsm_custodian_verified")
-        reasons.append("k25_cohort_floor_and_dp_budget_verified")
+        reasons.append("tee_attested_hsm_custodian_and_anti_replay_nonce_verified")
+        reasons.append("k25_cohort_floor_differencing_guard_and_dp_budget_verified")
         reasons.append("post_decryption_calibration_and_net_benefit_verified")
         if circuit.modality == "embedding_cloak":
             reasons.append("stochastic_cloak_is_model_specific_perturbation_not_fhe_encryption")
@@ -241,6 +327,7 @@ class KaiRosLighthouse:
         aggregate_output = {
             "cohort_n": cohort_n,
             "k_anonymity_floor": MIN_COHORT_K_ANONYMITY,
+            "min_symmetric_diff_guard": MIN_SYMMETRIC_DIFF_PATIENTS,
             "mean_risk_probability": round(mean_score, 4),
             "assurance_metrics": {
                 "auc_discrimination": circuit.calibrated_auc,
@@ -287,7 +374,7 @@ class KaiRosLighthouse:
         aggregate_output: dict[str, Any] | None,
     ) -> dict[str, Any]:
         receipt_body = {
-            "schema": "kairos-lighthouse-execution-receipt-v1",
+            "schema": "kairos-lighthouse-execution-receipt-v3",
             "request_id": request.request_id,
             "sponsor_tenant": request.sponsor_tenant,
             "model_id": request.model_id,
@@ -297,6 +384,9 @@ class KaiRosLighthouse:
             "presented_profile_digest": request.presented_profile_digest or "NONE",
             "tee_enclave_id": attestation.enclave_id,
             "tee_pcr0_sha256": attestation.pcr0_measurement_sha256,
+            "verifier_nonce": request.verifier_nonce,
+            "key_ttl_seconds": attestation.key_ttl_seconds,
+            "egress_zero_sandbox": attestation.egress_zero_sandbox_attested,
             "key_custodian": attestation.key_custodian,
             "decision": decision,
             "released": released,

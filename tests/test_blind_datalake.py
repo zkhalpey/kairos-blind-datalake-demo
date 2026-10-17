@@ -1,4 +1,4 @@
-"""Pytest verification suite for the KaiRos Lighthouse & ATARI/Origin Blind DataLake demonstrator."""
+"""Pytest verification suite for the Kai Blind Platform (KaiRos on Kai Lake, v0.3)."""
 
 from __future__ import annotations
 
@@ -7,12 +7,6 @@ import pytest
 
 from kairos_blind_lake.cli import run_full_demo
 from kairos_blind_lake.compliance_matrix import evaluate_compliance_readiness
-from kairos_blind_lake.enclave_lighthouse import (
-    CircuitCatalogEntry,
-    EnclaveAttestation,
-    KaiRosLighthouse,
-    SponsorModelRequest,
-)
 from kairos_blind_lake.medallion_vault import (
     ConsentRecord,
     CustodianCrosswalkVault,
@@ -104,14 +98,14 @@ def test_merkle_transparency_log_and_split_view_equivocation_defense() -> None:
         w1.cosign(tree_size=1, epoch=1, root_hash="f" * 64, prev_root_hash="0" * 64)
 
 
-def test_end_to_end_demo_merck_and_regeneron_scenarios(tmp_path: Path) -> None:
+def test_end_to_end_demo_merck_regeneron_and_cyberkai_redteam_scenarios(tmp_path: Path) -> None:
     bundle = run_full_demo(output_dir=tmp_path)
 
     assert bundle["medallion_summary"]["mastered_patients"] == 30
     assert bundle["medallion_summary"]["gold_count"] == 29  # 30 ingested minus 1 revoked
     assert bundle["medallion_summary"]["exception_queue_count"] == 1
     assert bundle["transparency_log_integrity"]["verified"] is True
-    assert bundle["transparency_log_integrity"]["tree_size"] == 7
+    assert bundle["transparency_log_integrity"]["tree_size"] == 10
 
     decisions = {
         r["receipt"]["request_id"]: (r["receipt"]["decision"], r["receipt"]["released"])
@@ -124,8 +118,12 @@ def test_end_to_end_demo_merck_and_regeneron_scenarios(tmp_path: Path) -> None:
     assert decisions["REQ-REGENERON-005-FINGERPRINT-DRIFT"] == ("WITHHOLD_CRYPTO_FINGERPRINT_MISMATCH", False)
     assert decisions["REQ-REGENERON-006-BULK-DICOM-BLOCK"] == ("REJECT_FHE_ON_BULK_MODALITY", False)
     assert decisions["REQ-REGENERON-007-DOSE-CLAIM-ABSTAIN"] == ("ABSTAIN_UNSUPPORTED_CLINICAL_CLAIM", False)
+    assert decisions["REQ-ATTACK-008-REPLAY-NONCE-BLOCK"] == ("REJECT_REPLAYED_VERIFIER_NONCE", False)
+    assert decisions["REQ-ATTACK-009-DIFFERENCING-RECONSTRUCTION-BLOCK"] == ("REJECT_DIFFERENCING_RECONSTRUCTION_ATTACK", False)
+    assert decisions["REQ-ATTACK-010-FORGED-MLDSA65-MODEL-SIG-BLOCK"] == ("REJECT_INVALID_MODEL_MLDSA65_SIGNATURE", False)
 
     comp = evaluate_compliance_readiness()
     assert comp["frameworks_mapped"] == 5
+    assert len(comp["truth_class_provenance"]) == 4
     assert (tmp_path / "kairos_blind_datalake_demo_receipt.json").is_file()
     assert (tmp_path / "kairos_blind_datalake_dashboard.html").is_file()

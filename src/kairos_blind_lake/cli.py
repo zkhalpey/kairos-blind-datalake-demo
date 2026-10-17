@@ -1,5 +1,5 @@
-"""End-to-end CLI & Interactive HTML Dashboard Generator for the Kai Blind Platform:
-KaiRos sitting on Kai Lake (Reverse-Engineered Veeva Vault + Quantum-Ready Cloak & Enclave).
+"""End-to-end CLI & Interactive HTML Dashboard Generator for the Kai Blind Platform (v0.3):
+KaiRos sitting on Kai Lake (Cloaked Veeva-Like Medallion Architecture + Quantum-Ready Enclave).
 """
 
 from __future__ import annotations
@@ -14,6 +14,7 @@ from .enclave_lighthouse import (
     EnclaveAttestation,
     KaiRosLighthouse,
     SponsorModelRequest,
+    sign_model_package_mldsa65,
 )
 from .medallion_vault import (
     INTEGRATION_SPOKES,
@@ -30,7 +31,7 @@ def run_full_demo(output_dir: Path | None = None) -> dict[str, Any]:
     out_dir = output_dir or (root / "receipts")
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    # 1. Initialize Custodian HSM Crosswalk Vault & Kai Lake (Reverse-Engineered Veeva + Cloak)
+    # 1. Initialize Custodian HSM Crosswalk Vault & Kai Lake (Cloaked Veeva-Like Platform)
     crosswalk = CustodianCrosswalkVault(
         b"hospital-custodian-hsm-master-key-32bytes!!",
         custodian_id="honorhealth-acr-custodian-enclave",
@@ -55,7 +56,7 @@ def run_full_demo(output_dir: Path | None = None) -> dict[str, Any]:
             )
         )
 
-    # Ingest 30 valid spoke events across the 7 Veeva spokes into Kai Lake Bronze -> Silver -> Gold
+    # Ingest 30 valid spoke events across the 7 Veeva-style spokes into Kai Lake Bronze -> Silver -> Gold
     spoke_ids = [s["spoke_id"] for s in INTEGRATION_SPOKES]
     for idx in range(1, 31):
         mdm_id = f"MDM-PAT-{idx:04d}"
@@ -75,7 +76,7 @@ def run_full_demo(output_dir: Path | None = None) -> dict[str, Any]:
             )
         )
 
-    # Test Veeva Bronze exception rules:
+    # Test Bronze exception rules:
     # (a) Unmatched MDM ID -> goes to exception queue, never creates a new patient
     unmatched_res = lake.ingest_spoke_event(
         SpokeIngestEvent(
@@ -110,6 +111,7 @@ def run_full_demo(output_dir: Path | None = None) -> dict[str, Any]:
     pcr0_good = "a7f9c2e41b8d0934e5621098f7c4b3a291087654321fedcba9876543210fedcb"
     fp_tulisokibart = "c4d8e2f190a3b7c6543210fedcba9876543210fedcba9876543210fedcba9876"
     fp_regeneron_oct = "e9b1a4c782d5f0123456789abcdef0123456789abcdef0123456789abcdef012"
+    sponsor_secret = b"kai-blind-platform-sponsor-mldsa65-key!"
 
     circuits = {
         "ckks-merck-tulisokibart-tl1a-cdx-v1": CircuitCatalogEntry(
@@ -133,7 +135,7 @@ def run_full_demo(output_dir: Path | None = None) -> dict[str, Any]:
             modality="embedding_cloak",
             scheme="Stochastic-Embedding-Cloak + CKKS-Linear-Head",
             n_features=4,
-            library_pinned="homokai-reference-fixture==0.2.0",
+            library_pinned="homokai-reference-fixture==0.3.0",
             parameter_profile_digest=fp_regeneron_oct,
             uncalibrated_auc=0.7420,
             uncalibrated_slope=0.8520,
@@ -154,6 +156,7 @@ def run_full_demo(output_dir: Path | None = None) -> dict[str, Any]:
             "merck-tulisokibart-tl1a-ai": 2.0,
             "regeneron-ophtha-oct-ai": 2.0,
         },
+        sponsor_signing_secret=sponsor_secret,
     )
 
     valid_attestation = EnclaveAttestation(
@@ -161,12 +164,31 @@ def run_full_demo(output_dir: Path | None = None) -> dict[str, Any]:
         tee_architecture="AWS-Nitro-Enclave / Confidential-VM + ML-KEM-768",
         pcr0_measurement_sha256=pcr0_good,
         ephemeral_public_key_sha256="b" * 64,
-        verifier_nonce="nonce-20261017-001",
+        verifier_nonce="enclave-boot-nonce-001",
+        key_ttl_seconds=180,
         freshness_ok=True,
+        egress_zero_sandbox_attested=True,
         key_custodian="honorhealth-acr-custodian-enclave",
     )
 
-    # 4. Run 7 Sponsor Scenarios (Merck Tulisokibart/TL1A & Regeneron Retinal OCT)
+    sig_merck_good = sign_model_package_mldsa65(
+        sponsor_secret,
+        sponsor_tenant="merck-tulisokibart-tl1a-ai",
+        model_id="merck-mk7240-tl1a-cdx-remission-v2",
+        model_weights_sha256="1" * 64,
+        circuit_id="ckks-merck-tulisokibart-tl1a-cdx-v1",
+    )
+    sig_regn_good = sign_model_package_mldsa65(
+        sponsor_secret,
+        sponsor_tenant="regeneron-ophtha-oct-ai",
+        model_id="regeneron-oct-cst-irf-persistence-v1",
+        model_weights_sha256="2" * 64,
+        circuit_id="cloak-regeneron-oct-fluid-persistence-v1",
+    )
+
+    first_gold_key = lake.gold[0].opaque_analytics_key
+
+    # 4. Run 10 Sponsor & Adversarial Attack Scenarios (Merck Tulisokibart/TL1A & Regeneron Retinal OCT)
     scenarios = [
         # Scenario 1: Merck Tulisokibart (MK-7240 / PRA023) TL1A CDx + Mucosal Transcriptomic Remission Feasibility -> RELEASE_ASSURED_FHE_AGGREGATE
         SponsorModelRequest(
@@ -184,6 +206,8 @@ def run_full_demo(output_dir: Path | None = None) -> dict[str, Any]:
             requested_row_export=False,
             epsilon_cost=0.5,
             timestamp_utc="2026-10-17T08:30:01Z",
+            verifier_nonce="vn-20261017-001",
+            model_mldsa65_signature=sig_merck_good,
         ),
         # Scenario 2: Regeneron Retinal OCT B-Scan Fluid Persistence (Stochastic Cloak + Calibrated Head) -> RELEASE_CLOAKED_EMBEDDING_AGGREGATE
         SponsorModelRequest(
@@ -201,6 +225,8 @@ def run_full_demo(output_dir: Path | None = None) -> dict[str, Any]:
             requested_row_export=False,
             epsilon_cost=0.5,
             timestamp_utc="2026-10-17T08:30:05Z",
+            verifier_nonce="vn-20261017-002",
+            model_mldsa65_signature=sig_regn_good,
         ),
         # Scenario 3: Merck Tulisokibart uncalibrated FHE run -> WITHHOLD_UNCALIBRATED_SLOPE_COLLAPSE (slope 1.32e7, net benefit < 0)
         SponsorModelRequest(
@@ -218,6 +244,8 @@ def run_full_demo(output_dir: Path | None = None) -> dict[str, Any]:
             requested_row_export=False,
             epsilon_cost=0.25,
             timestamp_utc="2026-10-17T08:30:10Z",
+            verifier_nonce="vn-20261017-003",
+            model_mldsa65_signature=sig_merck_good,
         ),
         # Scenario 4: Sponsor attempts raw patient row export -> REJECT_VENDOR_OR_ROW_EXPORT_PATH
         SponsorModelRequest(
@@ -235,6 +263,7 @@ def run_full_demo(output_dir: Path | None = None) -> dict[str, Any]:
             requested_row_export=True,
             epsilon_cost=0.25,
             timestamp_utc="2026-10-17T08:30:15Z",
+            verifier_nonce="vn-20261017-004",
         ),
         # Scenario 5: Tampered CKKS parameter fingerprint -> WITHHOLD_CRYPTO_FINGERPRINT_MISMATCH
         SponsorModelRequest(
@@ -252,6 +281,8 @@ def run_full_demo(output_dir: Path | None = None) -> dict[str, Any]:
             requested_row_export=False,
             epsilon_cost=0.25,
             timestamp_utc="2026-10-17T08:30:20Z",
+            verifier_nonce="vn-20261017-005",
+            model_mldsa65_signature=sig_regn_good,
         ),
         # Scenario 6: Attempt to run FHE directly on raw bulk DICOM -> REJECT_FHE_ON_BULK_MODALITY
         SponsorModelRequest(
@@ -269,6 +300,7 @@ def run_full_demo(output_dir: Path | None = None) -> dict[str, Any]:
             requested_row_export=False,
             epsilon_cost=0.25,
             timestamp_utc="2026-10-17T08:30:25Z",
+            verifier_nonce="vn-20261017-006",
         ),
         # Scenario 7: Unvalidated drug-dose comparative claim -> ABSTAIN_UNSUPPORTED_CLINICAL_CLAIM
         SponsorModelRequest(
@@ -286,6 +318,65 @@ def run_full_demo(output_dir: Path | None = None) -> dict[str, Any]:
             requested_row_export=False,
             epsilon_cost=0.25,
             timestamp_utc="2026-10-17T08:30:30Z",
+            verifier_nonce="vn-20261017-007",
+        ),
+        # Scenario 8 (cyberKai Control A): Replayed Verifier Nonce Attack -> REJECT_REPLAYED_VERIFIER_NONCE
+        SponsorModelRequest(
+            request_id="REQ-ATTACK-008-REPLAY-NONCE-BLOCK",
+            sponsor_tenant="merck-tulisokibart-tl1a-ai",
+            model_id="merck-mk7240-tl1a-cdx-remission-v2",
+            model_weights_sha256="1" * 64,
+            target_lake_id=lake.lake_id,
+            query_class="frozen_fhe_circuit",
+            modality="numeric_vector",
+            circuit_id="ckks-merck-tulisokibart-tl1a-cdx-v1",
+            presented_profile_digest=fp_tulisokibart,
+            apply_post_decryption_assurance=True,
+            requested_vendor_decrypt=False,
+            requested_row_export=False,
+            epsilon_cost=0.25,
+            timestamp_utc="2026-10-17T08:30:35Z",
+            verifier_nonce="vn-20261017-001",  # Replayed from Scenario 1!
+            model_mldsa65_signature=sig_merck_good,
+        ),
+        # Scenario 9 (cyberKai Control B): Sub-Cohort Differencing Attack (n=28 vs n=29, delta=1 < 3) -> REJECT_DIFFERENCING_RECONSTRUCTION_ATTACK
+        SponsorModelRequest(
+            request_id="REQ-ATTACK-009-DIFFERENCING-RECONSTRUCTION-BLOCK",
+            sponsor_tenant="merck-tulisokibart-tl1a-ai",
+            model_id="merck-mk7240-tl1a-cdx-remission-v2",
+            model_weights_sha256="1" * 64,
+            target_lake_id=lake.lake_id,
+            query_class="frozen_fhe_circuit",
+            modality="numeric_vector",
+            circuit_id="ckks-merck-tulisokibart-tl1a-cdx-v1",
+            presented_profile_digest=fp_tulisokibart,
+            apply_post_decryption_assurance=True,
+            requested_vendor_decrypt=False,
+            requested_row_export=False,
+            epsilon_cost=0.25,
+            timestamp_utc="2026-10-17T08:30:40Z",
+            verifier_nonce="vn-20261017-009",
+            model_mldsa65_signature=sig_merck_good,
+            cohort_filter_exclude_keys=(first_gold_key,),  # Differs by only 1 patient from Scenario 1
+        ),
+        # Scenario 10 (cyberKai Control C): Forged ML-DSA-65 Model-Weight Signature -> REJECT_INVALID_MODEL_MLDSA65_SIGNATURE
+        SponsorModelRequest(
+            request_id="REQ-ATTACK-010-FORGED-MLDSA65-MODEL-SIG-BLOCK",
+            sponsor_tenant="regeneron-ophtha-oct-ai",
+            model_id="regeneron-oct-cst-irf-persistence-v1",
+            model_weights_sha256="2" * 64,
+            target_lake_id=lake.lake_id,
+            query_class="cloak_embedding_inference",
+            modality="embedding_cloak",
+            circuit_id="cloak-regeneron-oct-fluid-persistence-v1",
+            presented_profile_digest=fp_regeneron_oct,
+            apply_post_decryption_assurance=True,
+            requested_vendor_decrypt=False,
+            requested_row_export=False,
+            epsilon_cost=0.25,
+            timestamp_utc="2026-10-17T08:30:45Z",
+            verifier_nonce="vn-20261017-010",
+            model_mldsa65_signature="f" * 64,  # Forged post-quantum signature
         ),
     ]
 
@@ -298,13 +389,13 @@ def run_full_demo(output_dir: Path | None = None) -> dict[str, Any]:
     compliance = evaluate_compliance_readiness()
 
     bundle = {
-        "schema": "kai-blind-platform-kai-lake-kairos-bundle-v2",
-        "platform": "Kai Blind Platform (KaiRos on Kai Lake)",
+        "schema": "kai-blind-platform-kai-lake-kairos-bundle-v3",
+        "platform": "Origin's AI Kai Platform — Powered by KaiRos Lighthouse on Kai Lake (Licensed via Z-Cor LLC / ATARI AI LLC)",
         "claim_boundary": "SYNTHETIC_REFERENCE_ARCHITECTURE_NO_PHI_TIER_BC_IP_HELD",
         "quantum_ready_posture": {
             "kem_at_rest_and_transit": "NIST FIPS 203 (ML-KEM-768)",
-            "signatures_and_log": "NIST FIPS 204 (ML-DSA-65) + Org HSM",
-            "in_use_compute": "Ring-LWE CKKS FHE + Stochastic Embedding Cloak inside Hardware TEE",
+            "signatures_and_log": "NIST FIPS 204 (ML-DSA-65) + Org HSM + Model-Weight Signature Pinning",
+            "in_use_compute": "Ring-LWE CKKS FHE + Stochastic Embedding Cloak inside Hardware TEE (Anti-Replay Nonce + TTL <= 300s + Egress-Zero Sandbox)",
         },
         "medallion_summary": lake.summary(),
         "unmatched_mdm_quarantine_proof": unmatched_res,
@@ -319,16 +410,16 @@ def run_full_demo(output_dir: Path | None = None) -> dict[str, Any]:
         "use_cases": {
             "regeneron_oct": {
                 "title": "Regeneron Ophthalmology: Retinal OCT Fluid Persistence & CST Trajectory",
-                "benchmark_cohort": "90 paired retinal OCT eyes (186 B-scans, central scan 25/49) + 29 live synthetic Gold Kai Lake patients",
+                "benchmark_cohort": "OBSERVED BENCHMARK: 90 paired retinal OCT eyes (186 B-scans, central scan 25/49) | LIVE DEMO COHORT: 29 consented synthetic Gold Kai Lake patients",
                 "modality_route": "Raw OCT DICOM stays at rest under ML-KEM-768; Hospital TEE extracts 64D embedding -> Stochastic Cloak + CKKS Linear Head",
-                "plain_vs_fhe_cst_mae": "Plaintext CST MAE 38.3 um vs Uncalibrated CKKS drift 3.8-8.0 um (slope 0.852) -> Calibrated KaiRos gate restores within 0.02-0.05 um (slope 1.004, AUC 0.7420, NB@0.35 +0.0910)",
+                "plain_vs_fhe_cst_mae": "Plaintext CST MAE 38.30 um vs Uncalibrated CKKS drift 44.80 um (slope 0.852) -> Calibrated KaiRos gate restores 38.33 um (slope 1.004, AUC 0.7420, NB@0.35 +0.0910)",
                 "boundary_enforced": "Observed visit-to-visit fluid persistence only; unvalidated 2/4/8/16 mg aflibercept dose-comparative claims automatically ABSTAIN.",
             },
             "merck_tulisokibart": {
                 "title": "Merck Immunology: Tulisokibart (MK-7240 / PRA023) Anti-TL1A Companion Diagnostic (CDx) & UC/CD Remission",
-                "benchmark_cohort": "Synthetic ARTEMIS-UC / ATLAS-UC & APOLLO-CD-aligned IBD cohort in Kai Lake Gold (n = 29 active consented patients, k >= 25 floor)",
+                "benchmark_cohort": "PUBLISHED REFERENCE: ARTEMIS-UC Phase 2 (n=135; 26% vs 1% Cohort 1; 32% vs 11% CDx+ Remission) | LIVE DEMO COHORT: 29 consented synthetic Gold Kai Lake IBD patients",
                 "modality_route": "Mucosal biopsy Th1/Th17/fibrosis transcriptomic vector + genetic CDx SNP signature evaluated under Ring-LWE CKKS FHE inside TEE",
-                "plain_vs_fhe_remission": "Uncalibrated CKKS collapses calibration slope to 1.32e7 (harmful Net Benefit -0.0412) -> KaiRos Assurance Gate restores slope to 1.011 (AUC 0.7840, Brier 0.1680, NB@0.35 +0.1120), stratifying CDx-positive clinical remission (32% vs 11% placebo reference)",
+                "plain_vs_fhe_remission": "Uncalibrated CKKS collapses calibration slope to 1.32e7 (harmful Net Benefit -0.0412) -> KaiRos Assurance Gate restores slope to 1.011 (AUC 0.7840, Brier 0.1680, NB@0.35 +0.1120)",
                 "boundary_enforced": "Zero genomic or biopsy row export; genetic CDx loci and Silver RE-ID crosswalk remain isolated inside the hospital custodian HSM.",
             },
         },
@@ -375,6 +466,17 @@ def render_dashboard_html(bundle: dict[str, Any]) -> str:
             f"</tr>"
         )
 
+    truth_rows = []
+    for t in comp["truth_class_provenance"]:
+        truth_rows.append(
+            f"<tr>"
+            f"<td><strong>{t['quantity_or_metric']}</strong></td>"
+            f"<td><span class='badge badge-info'>{t['truth_class']}</span></td>"
+            f"<td>{t['source_provenance']}</td>"
+            f"<td>{t['demo_role']}</td>"
+            f"</tr>"
+        )
+
     veeva_rows = []
     for row in comp["veeva_comparison"]:
         veeva_rows.append(
@@ -401,7 +503,7 @@ def render_dashboard_html(bundle: dict[str, Any]) -> str:
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Kai Blind Platform — KaiRos on Kai Lake Interactive Receipt</title>
+<title>Origin's AI Kai Platform — KaiRos on Kai Lake Interactive Receipt (v0.3)</title>
 <style>
   .kai-container {{
     color: var(--foreground, #e2e8f0);
@@ -429,10 +531,11 @@ def render_dashboard_html(bundle: dict[str, Any]) -> str:
 </head>
 <body>
 <div class="kai-container">
-  <h1>Kai Blind Platform — KaiRos Lighthouse on Kai Lake (v0.2)</h1>
+  <h1>Origin's AI Kai Platform — Powered by KaiRos Lighthouse on Kai Lake (v0.3)</h1>
   <p class="subtitle">
-    Reverse-engineered Veeva Vault 7-Spoke MDM + Bronze/Silver/Gold Medallion Lake with a Quantum-Ready Cloak &amp; Enclave
-    (NIST FIPS 203 ML-KEM-768, FIPS 204 ML-DSA-65, Hardware TEE, Ring-LWE CKKS FHE &amp; Stochastic Cloak). Synthetic-only demonstrator; zero PHI.
+    Cloaked Veeva-Like 7-Spoke MDM + Bronze/Silver/Gold Medallion Lake with Quantum-Ready Enclave
+    (NIST FIPS 203 ML-KEM-768, FIPS 204 ML-DSA-65, Hardware TEE, Anti-Replay Nonce, Differencing Guard, Ring-LWE CKKS FHE &amp; Stochastic Cloak).
+    Licensed via Z-Cor LLC / ATARI AI LLC. Synthetic-only demonstrator; zero PHI.
   </p>
 
   <div class="kpi-grid">
@@ -447,9 +550,9 @@ def render_dashboard_html(bundle: dict[str, Any]) -> str:
       <div class="muted">Sponsor walk-back: BLOCKED</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-label">Quantum-Ready Perimeter</div>
-      <div class="kpi-val">ML-KEM-768 + TEE</div>
-      <div class="muted">FIPS 203/204 + CKKS FHE + Cloak</div>
+      <div class="kpi-label">11-Stage Enclave Gate</div>
+      <div class="kpi-val">2 Released / 8 Blocked</div>
+      <div class="muted">Includes Replay, Differencing &amp; ML-DSA-65</div>
     </div>
     <div class="kpi-card">
       <div class="kpi-label">CT Merkle Log &amp; Witnesses</div>
@@ -463,7 +566,7 @@ def render_dashboard_html(bundle: dict[str, Any]) -> str:
     <div class="kpi-card">
       <div class="kpi-label">Use Case A · Regeneron Ophthalmology</div>
       <div style="font-weight:700; margin:4px 0;">{uc_reg['title']}</div>
-      <div class="muted" style="margin-bottom:6px;"><strong>Cohort:</strong> {uc_reg['benchmark_cohort']}</div>
+      <div class="muted" style="margin-bottom:6px;"><strong>Provenance:</strong> {uc_reg['benchmark_cohort']}</div>
       <div class="muted" style="margin-bottom:6px;"><strong>Cloak Route:</strong> {uc_reg['modality_route']}</div>
       <div class="muted" style="margin-bottom:6px;"><strong>Assurance Proof:</strong> {uc_reg['plain_vs_fhe_cst_mae']}</div>
       <div class="muted"><strong>Safety Gate:</strong> {uc_reg['boundary_enforced']}</div>
@@ -471,20 +574,35 @@ def render_dashboard_html(bundle: dict[str, Any]) -> str:
     <div class="kpi-card">
       <div class="kpi-label">Use Case B · Merck Immunology (Tulisokibart / MK-7240)</div>
       <div style="font-weight:700; margin:4px 0;">{uc_mrk['title']}</div>
-      <div class="muted" style="margin-bottom:6px;"><strong>Cohort:</strong> {uc_mrk['benchmark_cohort']}</div>
+      <div class="muted" style="margin-bottom:6px;"><strong>Provenance:</strong> {uc_mrk['benchmark_cohort']}</div>
       <div class="muted" style="margin-bottom:6px;"><strong>FHE Route:</strong> {uc_mrk['modality_route']}</div>
       <div class="muted" style="margin-bottom:6px;"><strong>Assurance Proof:</strong> {uc_mrk['plain_vs_fhe_remission']}</div>
       <div class="muted"><strong>Safety Gate:</strong> {uc_mrk['boundary_enforced']}</div>
     </div>
   </div>
 
-  <h2>1. Live Sponsor Model Execution Matrix (Merck Tulisokibart &amp; Regeneron OCT via KaiRos)</h2>
+  <h2>1. Truth-Class Provenance Table (Observed Empirical Benchmarks vs. Synthetic Live Enclave Cohort)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Quantity or Benchmark Metric</th>
+        <th>Truth Class</th>
+        <th>Source Provenance</th>
+        <th>Role in Demonstrator</th>
+      </tr>
+    </thead>
+    <tbody>
+      {''.join(truth_rows)}
+    </tbody>
+  </table>
+
+  <h2>2. Live Sponsor &amp; Adversarial Red-Team Execution Matrix (10 Scenarios via KaiRos)</h2>
   <table>
     <thead>
       <tr>
         <th>Request ID</th>
         <th>Sponsor Tenant &amp; Model</th>
-        <th>KaiRos Verdict</th>
+        <th>KaiRos 11-Stage Verdict</th>
         <th>Released Aggregate / Assurance Metrics</th>
         <th>Gate Rationale</th>
         <th>Merkle Receipt</th>
@@ -495,13 +613,13 @@ def render_dashboard_html(bundle: dict[str, Any]) -> str:
     </tbody>
   </table>
 
-  <h2>2. Why Kai Lake + KaiRos Outperforms Standard Veeva Vault</h2>
+  <h2>3. Why Cloaked Veeva-Like Kai Lake + KaiRos Outperforms Standard Veeva Vault</h2>
   <table>
     <thead>
       <tr>
         <th>Architectural Layer</th>
         <th>Standard Veeva Vault + Cloud Lakehouse</th>
-        <th>Kai Lake + KaiRos (Kai Blind Platform)</th>
+        <th>Kai Lake + KaiRos (Cloaked Veeva-Like Platform)</th>
         <th>Strategic Advantage for Pharma (Merck / Regeneron)</th>
       </tr>
     </thead>
@@ -510,7 +628,7 @@ def render_dashboard_html(bundle: dict[str, Any]) -> str:
     </tbody>
   </table>
 
-  <h2>3. Cybersecurity &amp; Regulatory Control Mapping (ISO 27001/27701, SOC 1/2 Type II, HIPAA, 21 CFR Part 11)</h2>
+  <h2>4. Cybersecurity &amp; Regulatory Control Mapping (ISO 27001/27701, SOC 1/2 Type II, HIPAA, 21 CFR Part 11)</h2>
   <table>
     <thead>
       <tr>
